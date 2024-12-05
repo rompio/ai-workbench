@@ -30,24 +30,24 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      # Install pre-commit hooks
+
+      # Install pre-commit and run hooks
       - name: Install pre-commit
         run: |
           pip install pre-commit
-          pre-commit install  # This installs git hooks
+          pre-commit install  # Install git hooks
 
-      # Run pre-commit hooks
+      # Run pre-commit hooks (for linting and formatting)
       - name: Run pre-commit hooks
         run: |
-          pre-commit run --all-files
+          pre-commit run --all-files --verbose
 
-      # Run tests with pytest (with optional coverage)
+      # Install pytest and pytest-cov
       - name: Install pytest and pytest-cov
         run: |
           pip install pytest pytest-cov
 
+      # Run tests with coverage
       - name: Run tests with coverage
         run: |
           pytest --cov=job_hunter --cov=users --cov-report=xml  # Adjust module names as needed
-
