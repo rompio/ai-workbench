@@ -13,6 +13,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout code
       - name: Checkout code
@@ -30,20 +31,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      # Lint with flake8
-      - name: Lint code with flake8
+      # Install pre-commit hooks
+      - name: Install pre-commit
         run: |
-          pip install flake8
-          flake8 .  # Lint the current directory
+          pip install pre-commit
+          pre-commit install  # This installs git hooks
 
-      # Format code with black
-      - name: Format code with black
+      # Run pre-commit hooks
+      - name: Run pre-commit hooks
         run: |
-          pip install black
-          black --check .  # Check if the code is properly formatted, without modifying it
+          pre-commit run --all-files
 
-      # Run tests with pytest
-      - name: Run tests
+      # Run tests with pytest (with optional coverage)
+      - name: Install pytest and pytest-cov
         run: |
-          pip install pytest
-          pytest  # Run the tests
+          pip install pytest pytest-cov
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=job_hunter --cov=users --cov-report=xml  # Adjust module names as needed
+
