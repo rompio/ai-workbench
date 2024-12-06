@@ -1,0 +1,14 @@
+<!-- home/templates/home/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home:dashboard' %}">Home Dashboard</a></li>
+            <li><a href="{% url 'users:login' %}">Login</a></li>
+            <li><a href="{% url 'users:register' %}">Register</a></li>
+            <li><a href="{% url 'job_hunter:index' %}">Job Tools</a></li>
+        </ul>
+    </nav>
+{% endblock %}

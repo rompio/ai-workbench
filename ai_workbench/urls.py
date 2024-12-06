@@ -3,5 +3,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("job_hunter.urls")),  # Link to the job_hunter app's URLs
+    path("home/", include("home.urls")),  # Include home app URLs
+    path("users/", include("users.urls")),
+    path("job_hunter/", include("job_hunter.urls")),
 ]
