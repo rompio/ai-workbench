@@ -88,6 +88,11 @@ class ChatLogTestCase(TestCase):
         self.assertTrue(str(self.chat_log).startswith("Chat with testuser"))
 
 
+# job_hunter/tests.py
+from django.urls import reverse
+from django.test import TestCase
+
+
 class IndexViewTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
@@ -96,6 +101,8 @@ class IndexViewTestCase(TestCase):
 
     def test_index_view(self):
         self.client.login(username="testuser", password="password")
-        response = self.client.get(reverse("index"))
+        response = self.client.get(
+            reverse("job_hunter:index")
+        )  # Use the namespace: job_hunter:index
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "job_hunter/index.html")
