@@ -20,7 +20,6 @@ class Offer(models.Model):
         ("Software Engineer", "Software Engineer"),
         ("Data Scientist", "Data Scientist"),
         ("Product Manager", "Product Manager"),
-        # Add other positions as necessary
     ]
 
     position = models.CharField(max_length=100, choices=POSITION_CHOICES)
@@ -30,7 +29,7 @@ class Offer(models.Model):
     url = models.URLField(blank=True, null=True)
     status = models.IntegerField(
         default=0
-    )  # You could make this a choice field if needed
+    )  # Optionally make a choice field here
     response = models.BooleanField(default=False)
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="offers"
