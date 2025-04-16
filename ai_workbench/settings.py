@@ -69,15 +69,14 @@ WSGI_APPLICATION = "ai_workbench.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / "db.sqlite3"),
+        default='postgres://localhost/workbench_db',  # Falls du einen lokalen Standard willst
         conn_max_age=600,
         ssl_require=True
     )
 }
+
 
 
 
