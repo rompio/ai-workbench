@@ -71,9 +71,7 @@ WSGI_APPLICATION = "ai_workbench.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://localhost/workbench_db',  # Falls du einen lokalen Standard willst
-        conn_max_age=600,
-        ssl_require=True
+        default=os.getenv('DATABASE_URL')
     )
 }
 
