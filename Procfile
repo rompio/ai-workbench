@@ -1,1 +1,1 @@
-web: gunicorn ai-workbench.wsgi
+web: gunicorn ai_workbench.wsgi:application
