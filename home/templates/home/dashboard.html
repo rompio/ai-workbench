@@ -1,13 +1,25 @@
 {% extends 'base.html' %}
-
 {% block content %}
-    <h1>Dashboard</h1>
-    <nav>
-        <ul>
-            <li><a href="{% url 'home:dashboard' %}">Home Dashboard</a></li>
-            <li><a href="{% url 'users:login' %}">Login</a></li>
-            <li><a href="{% url 'users:register' %}">Register</a></li>
-            <li><a href="{% url 'job_hunter:index' %}">Job Tools</a></li>
-        </ul>
-    </nav>
+<div class="container mt-5">
+    <h1>Willkommen {{ user.username }} 👋</h1>
+    <p>Jobtitel: <strong>{{ user.job_title|default:"Nicht angegeben" }}</strong></p>
+
+    <h4 class="mt-4">Deine Tools:</h4>
+    <div class="row">
+        {% for tool in user.tools.all %}
+        <div class="col-md-4">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tool.name }}</h5>
+                    <p class="card-text">{{ tool.description|default:"Keine Beschreibung" }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">Keine Tools zugewiesen.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'users:logout' %}" class="btn btn-outline-danger mt-3">Logout</a>
+</div>
 {% endblock %}
