@@ -17,7 +17,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["rompion-workbench-14980d8a0750.herokuapp.com"]
+ALLOWED_HOSTS = ["rompion-workbench-14980d8a0750.herokuapp.com", '127.0.0.1']
 
 
 # Application definition
