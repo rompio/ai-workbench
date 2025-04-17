@@ -133,7 +133,7 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'login'
+from django.urls import reverse_lazy
+LOGIN_URL = reverse_lazy('users:login')
+
 

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <h2>Navigation</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><a href="#">Personal Data</a></li>
+      <li class="list-group-item"><a href="#">Offers</a></li>
+      <li class="list-group-item"><a href="#">AI Assistant</a></li>
+      <li class="list-group-item"><a href="#">Search</a></li>
+    </ul>
+  </div>
+
+  <div class="col-md-8">
+    <h2>Dashboard</h2>
+    {% if stats %}
+      <ul class="list-group">
+        <li class="list-group-item">Total Offers: {{ stats.total_offers }}</li>
+        <li class="list-group-item">Responded Offers: {{ stats.responded_offers }}</li>
+        <li class="list-group-item">Total Applications: {{ stats.total_applications }}</li>
+        <li class="list-group-item">Open Applications: {{ stats.open_applications }}</li>
+        <li class="list-group-item">Applied Applications: {{ stats.applied_applications }}</li>
+        <li class="list-group-item">Rejected Applications: {{ stats.rejected_applications }}</li>
+        <li class="list-group-item">Accepted Applications: {{ stats.accepted_applications }}</li>
+      </ul>
+    {% else %}
+      <p>No data available.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
