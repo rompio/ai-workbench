@@ -17,7 +17,7 @@ def dashboard_view(request):
                 COUNT(CASE WHEN o.status = 2 THEN 1 END) AS applied_applications,
                 COUNT(CASE WHEN o.status = 3 THEN 1 END) AS rejected_applications,
                 COUNT(CASE WHEN o.status = 4 THEN 1 END) AS accepted_applications
-            FROM users_user u
+            FROM users_customuser u
             LEFT JOIN job_hunter_offer o ON u.id = o.user_id
             WHERE u.id = %s
             GROUP BY u.id;

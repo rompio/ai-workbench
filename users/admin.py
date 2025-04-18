@@ -1,45 +1,9 @@
+# users/admin.py
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Tool
+from .models import CustomUser
 
-
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = [
-        "username",
-        "email",
-        "job_title",
-        "role",
-        "is_verified",
-        "is_staff",
-    ]
-    fieldsets = UserAdmin.fieldsets + (
-        (
-            "Zusätzliche Felder",
-            {
-                "fields": (
-                    "job_title",
-                    "tools",
-                    "role",
-                    "is_verified",
-                ),
-            },
-        ),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (
-            "Zusätzliche Felder",
-            {
-                "fields": (
-                    "job_title",
-                    "tools",
-                    "role",
-                    "is_verified",
-                ),
-            },
-        ),
-    )
-
+class CustomUserAdmin(admin.ModelAdmin):
+    # Entferne job_title und role, da sie im Modell nicht mehr existieren
+    list_display = ['username', 'first_name', 'last_name', 'email']
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Tool)
