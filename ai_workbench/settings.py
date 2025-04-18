@@ -134,6 +134,5 @@ ADMINS = [
 MANAGERS = ADMINS
 
 from django.urls import reverse_lazy
-LOGIN_URL = reverse_lazy('users:login')
 
-
+LOGIN_URL = reverse_lazy("users:login")

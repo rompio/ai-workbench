@@ -7,13 +7,21 @@ from .models import Offer
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = ['position', 'company', 'offer_text', 'about_company', 'url', 'response', 'status']
+        fields = [
+            "position",
+            "company",
+            "offer_text",
+            "about_company",
+            "url",
+            "response",
+            "status",
+        ]
 
 
 class PInfoForm(forms.ModelForm):
     class Meta:
         model = PInfo
-        fields = ['first_name', 'last_name', 'email', 'background']
+        fields = ["first_name", "last_name", "email", "background"]
         widgets = {
-            'background': forms.Textarea(attrs={'rows': 4}),
+            "background": forms.Textarea(attrs={"rows": 4}),
         }
