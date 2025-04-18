@@ -7,11 +7,11 @@
   <div class="col-md-4">
     <h2>Navigation</h2>
     <ul class="list-group">
-      <li class="list-group-item"><a href="#">Personal Data</a></li>
-      <li class="list-group-item"><a href="#">Offers</a></li>
-      <li class="list-group-item"><a href="#">AI Assistant</a></li>
-      <li class="list-group-item"><a href="#">Search</a></li>
-    </ul>
+      <li class="list-group-item"><a href="{% url 'job_hunter:personal_data' %}">Personal Data</a></li>
+      <li class="list-group-item"><a href="{% url 'job_hunter:offers' %}">Offers</a></li>
+      <li class="list-group-item"><a href="{% url 'job_hunter:ai_assistant' %}">AI Assistant</a></li>
+      <li class="list-group-item"><a href="{% url 'job_hunter:search' %}">Search</a></li>
+    </ul>    
   </div>
 
   <div class="col-md-8">

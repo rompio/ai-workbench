@@ -30,3 +30,23 @@ def dashboard_view(request):
              stats["rejected_applications"], stats["accepted_applications"]) = row
 
     return render(request, "job_hunter/dashboard.html", {"stats": stats})
+
+
+@login_required
+def personal_data_view(request):
+    return render(request, "job_hunter/personal_data.html")
+
+
+@login_required
+def offers_view(request):
+    return render(request, "job_hunter/offers.html")
+
+
+@login_required
+def ai_assistant_view(request):
+    return render(request, "job_hunter/ai_assistant.html")
+
+
+@login_required
+def search_view(request):
+    return render(request, "job_hunter/search.html")
