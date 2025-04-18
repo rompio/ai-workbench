@@ -1,4 +1,3 @@
-<!-- offer_list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -6,10 +5,15 @@
   <ul>
     {% for offer in offers %}
       <li>
-        <a href="{% url 'offer_detail' offer.pk %}">{{ offer.position }} at {{ offer.company }}</a>
-        | <a href="{% url 'offer_edit' offer.pk %}">Edit</a>
+        <a href="{% url 'job_hunter:offer_detail' offer.pk %}">{{ offer.position }} at {{ offer.company }}</a>
+        | <a href="{% url 'job_hunter:offer_edit' offer.pk %}">Edit</a>
+        | <a href="{% url 'job_hunter:offer_delete' offer.pk %}" onclick="return confirm('Are you sure you want to delete this offer?');">Delete</a>
       </li>
     {% endfor %}
   </ul>
   <a href="{% url 'job_hunter:offer_create' %}">Create new offer</a>
+
+  <!-- Back Link -->
+  <br><br>
+  <a href="{% url 'job_hunter:dashboard' %}">Back to Dashboard</a>
 {% endblock %}

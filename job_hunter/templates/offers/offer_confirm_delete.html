@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Are you sure you want to delete this offer?</h2>
+  <p>Position: {{ offer.position }}</p>
+  <p>Company: {{ offer.company }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete this offer</button>
+    <a href="{% url 'job_hunter:offer_list' %}">Cancel</a>
+  </form>
+{% endblock %}

@@ -7,6 +7,14 @@ from django.db import connection
 from django.urls import reverse_lazy
 from .models import Offer
 from .forms import OfferForm
+from django.views.generic import DeleteView
+
+
+class OfferDeleteView(DeleteView):
+    model = Offer
+    template_name = 'offers/offer_confirm_delete.html'
+    context_object_name = 'offer'
+    success_url = reverse_lazy('job_hunter:offer_list')
 
 
 @login_required
@@ -88,7 +96,7 @@ class OfferCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("offer_list")
+        return reverse_lazy("job_hunter:offer_list")
 
 
 class OfferUpdateView(UpdateView):
@@ -97,7 +105,7 @@ class OfferUpdateView(UpdateView):
     template_name = "offers/offer_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("offer_list")
+        return reverse_lazy("job_hunter:offer_list")
 
 
 @login_required

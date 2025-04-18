@@ -5,6 +5,7 @@ from .views import (
     personal_data_view,
     ai_assistant_view,
     search_view,
+    OfferDeleteView
 )
 from . import views
 
@@ -16,7 +17,7 @@ urlpatterns = [
     path("personal-data/", personal_data_view, name="personal_data"),
     path("ai-assistant/", ai_assistant_view, name="ai_assistant"),
     path("search/", search_view, name="search"),
-    path("offer_list/", views.OfferListView.as_view(), name="offer_list"),
+    path('offer_list/', views.OfferListView.as_view(), name='offer_list'),
     path(
         "offer/<int:pk>/", views.OfferDetailView.as_view(), name="offer_detail"
     ),
@@ -28,4 +29,5 @@ urlpatterns = [
         views.OfferUpdateView.as_view(),
         name="offer_edit",
     ),
+    path('offer/<int:pk>/delete/', OfferDeleteView.as_view(), name='offer_delete'),
 ]
