@@ -1,0 +1,12 @@
+<!-- offer_form.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Create/Edit Offer</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Offer</button>
+  </form>
+  <a href="{% url 'offer_list' %}">Back to Offers</a>
+{% endblock %}

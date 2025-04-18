@@ -1,6 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from .models import PInfo
+from .forms import PInfoForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.db import connection
+from django.urls import reverse_lazy
+from .models import Offer
+from .forms import OfferForm
 
 @login_required
 def dashboard_view(request):
@@ -34,12 +40,51 @@ def dashboard_view(request):
 
 @login_required
 def personal_data_view(request):
-    return render(request, "job_hunter/personal_data.html")
+    pinfo, created = PInfo.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = PInfoForm(request.POST, instance=pinfo)
+        if form.is_valid():
+            form.save()
+            return redirect('job_hunter:personal_data')
+    else:
+        form = PInfoForm(instance=pinfo)
+
+    return render(request, 'job_hunter/personal_data.html', {'form': form})
 
 
-@login_required
-def offers_view(request):
-    return render(request, "job_hunter/offers.html")
+class OfferListView(ListView):
+    model = Offer
+    template_name = 'offers/offer_list.html'
+    context_object_name = 'offers'
+
+    def get_queryset(self):
+        return Offer.objects.filter(user=self.request.user)
+
+class OfferDetailView(DetailView):
+    model = Offer
+    template_name = 'offers/offer_detail.html'
+    context_object_name = 'offer'
+
+class OfferCreateView(CreateView):
+    model = Offer
+    form_class = OfferForm
+    template_name = 'offers/offer_form.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('offer_list')
+
+class OfferUpdateView(UpdateView):
+    model = Offer
+    form_class = OfferForm
+    template_name = 'offers/offer_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('offer_list')
 
 
 @login_required
@@ -50,3 +95,4 @@ def ai_assistant_view(request):
 @login_required
 def search_view(request):
     return render(request, "job_hunter/search.html")
+

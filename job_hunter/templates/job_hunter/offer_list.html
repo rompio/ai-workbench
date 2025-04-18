@@ -1,0 +1,15 @@
+<!-- offer_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Your Offers</h2>
+  <ul>
+    {% for offer in offers %}
+      <li>
+        <a href="{% url 'offer_detail' offer.pk %}">{{ offer.position }} at {{ offer.company }}</a>
+        | <a href="{% url 'offer_edit' offer.pk %}">Edit</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'job_hunter:offer_create' %}">Create new offer</a>
+{% endblock %}

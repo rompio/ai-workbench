@@ -1,0 +1,12 @@
+<!-- offer_detail.html -->
+{% extends 'base' %}
+
+{% block content %}
+  <h2>{{ offer.position }} at {{ offer.company }}</h2>
+  <p><strong>Offer Description:</strong> {{ offer.offer_text }}</p>
+  <p><strong>About the Company:</strong> {{ offer.about_company }}</p>
+  <p><strong>URL:</strong> <a href="{{ offer.url }}" target="_blank">{{ offer.url }}</a></p>
+  <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+  <p><strong>Response:</strong> {{ offer.response|yesno:"Yes,No" }}</p>
+  <a href="{% url 'offer_edit' offer.pk %}">Edit Offer</a>
+{% endblock %}
