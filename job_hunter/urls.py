@@ -30,4 +30,7 @@ urlpatterns = [
         name="offer_edit",
     ),
     path('offer/<int:pk>/delete/', OfferDeleteView.as_view(), name='offer_delete'),
+    path('offer/<int:offer_id>/create-letter/', views.create_letter, name='create_letter'),
+    path('offer/<int:offer_id>/view-letter/', views.view_letter, name='view_letter'),
+
 ]

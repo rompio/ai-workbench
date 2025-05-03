@@ -1,0 +1,15 @@
+<!-- offer_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ offer.position }} at {{ offer.company }}</h2>
+  <p><strong>Offer Description:</strong> {{ offer.offer_text }}</p>
+  <p><strong>About the Company:</strong> {{ offer.about_company }}</p>
+  <p><strong>URL:</strong> <a href="{{ offer.url }}" target="_blank">{{ offer.url }}</a></p>
+  <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+  <p><strong>Response:</strong> {{ offer.response|yesno:"Yes,No" }}</p>
+  <a href="{% url 'job_hunter:offer_edit' offer.pk %}"class="btn btn-primary" hx-post="{% url 'job_hunter:offer_edit' offer.pk %}" hx-trigger="click" hx-swap="none">Edit Offer</a>
+  <a href="{% url 'job_hunter:create_letter' offer.pk %}" class="btn btn-primary" hx-post="{% url 'job_hunter:create_letter' offer.pk %}" hx-trigger="click" hx-swap="none">Create Letter</a>
+  <a href="{% url 'job_hunter:view_letter' offer.pk %}" class="btn btn-secondary">View Letter</a>
+
+{% endblock %}

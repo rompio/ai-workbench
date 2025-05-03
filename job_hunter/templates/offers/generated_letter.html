@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Bewerbung für {{ offer.position }} bei {{ offer.company }}</h2>
+
+  <div class="card mt-4 p-4">
+    <pre style="white-space: pre-wrap;">{{ letter_text }}</pre>
+  </div>
+
+  <a href="{% url 'job_hunter:offer_detail' offer.id %}" class="btn btn-secondary mt-3">Zurück zum Angebot</a>
+{% endblock %}
