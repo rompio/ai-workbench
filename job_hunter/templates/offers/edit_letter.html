@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Bewerbungsschreiben bearbeiten</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Formular wird hier angezeigt -->
+        <button type="submit">Änderungen speichern</button>
+    </form>
+
+    <a href="{% url 'job_hunter:view_letter' offer.id %}">
+        <button>Zurück zum Bewerbungsschreiben</button>
+    </a>
+{% endblock %}

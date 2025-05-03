@@ -8,4 +8,5 @@
   </div>
 
   <a href="{% url 'job_hunter:offer_detail' offer.id %}" class="btn btn-secondary mt-3">Zurück zum Angebot</a>
+  <a href="{% url 'job_hunter:edit_letter' offer.id %}"><button>Letter Editieren</button></a>
 {% endblock %}

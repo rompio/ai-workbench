@@ -32,5 +32,6 @@ urlpatterns = [
     path('offer/<int:pk>/delete/', OfferDeleteView.as_view(), name='offer_delete'),
     path('offer/<int:offer_id>/create-letter/', views.create_letter, name='create_letter'),
     path('offer/<int:offer_id>/view-letter/', views.view_letter, name='view_letter'),
+    path('offer/<int:offer_id>/edit-letter/', views.edit_letter, name='edit_letter'),  # Neue URL für Editieren
 
 ]

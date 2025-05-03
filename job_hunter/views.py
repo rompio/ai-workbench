@@ -5,12 +5,34 @@ from .forms import PInfoForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.db import connection
 from django.urls import reverse_lazy
-from .forms import OfferForm
+from .forms import OfferForm, ApplicationForm
 from django.views.generic import DeleteView
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 import openai
 from .utils import generate_application_letter
+
+@login_required
+def edit_letter(request, offer_id):
+    # Hole das Angebot und stelle sicher, dass der Benutzer zu diesem Angebot gehört
+    offer = get_object_or_404(Offer, id=offer_id, user=request.user)
+
+    # Hole die zugehörige Application-Instanz für den Benutzer und das Angebot
+    letter = get_object_or_404(Application, offer=offer, user=request.user)
+
+    # Wenn das Formular gesendet wird, speichern wir die Änderungen
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, instance=letter)
+        if form.is_valid():
+            form.save()
+            return redirect('job_hunter:view_letter', offer_id=offer.id)
+    else:
+        form = ApplicationForm(instance=letter)
+
+    return render(request, 'offers/edit_letter.html', {
+        'form': form,
+        'offer': offer
+    })
 
 @login_required
 def create_letter(request, offer_id):
@@ -66,7 +88,8 @@ def view_letter(request, offer_id):
 
     return render(request, "offers/generated_letter.html", {
         "letter_text": letter_text,
-        "offer": offer
+        "offer": offer,
+        "letter": letter  # Wir geben das ganze Letter-Objekt weiter, um den Edit-Link zu ermöglichen
     })
 
 
