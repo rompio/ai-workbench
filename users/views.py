@@ -23,7 +23,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # Auto-Login nach Registrierung
-            return redirect("users:home")  # Zielseite nach Registrierung
+            return redirect("home:dashboard")  # Zielseite nach Registrierung
     else:
         form = CustomUserCreationForm()
     return render(request, "users/register.html", {"form": form})
