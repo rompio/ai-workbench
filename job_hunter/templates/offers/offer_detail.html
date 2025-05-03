@@ -9,7 +9,11 @@
   <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
   <p><strong>Response:</strong> {{ offer.response|yesno:"Yes,No" }}</p>
   <a href="{% url 'job_hunter:offer_edit' offer.pk %}"class="btn btn-primary" hx-post="{% url 'job_hunter:offer_edit' offer.pk %}" hx-trigger="click" hx-swap="none">Edit Offer</a>
-  <a href="{% url 'job_hunter:create_letter' offer.pk %}" class="btn btn-primary" hx-post="{% url 'job_hunter:create_letter' offer.pk %}" hx-trigger="click" hx-swap="none">Create Letter</a>
+  <form method="post" action="{% url 'job_hunter:create_letter' offer.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Create Letter</button>
+  </form>
+
   <a href="{% url 'job_hunter:view_letter' offer.pk %}" class="btn btn-secondary">View Letter</a>
 
 {% endblock %}

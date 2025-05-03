@@ -1,65 +1,74 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import PInfo
+from .models import Offer, PInfo, Application
 from .forms import PInfoForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.db import connection
 from django.urls import reverse_lazy
-from .models import Offer
 from .forms import OfferForm
 from django.views.generic import DeleteView
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_POST
+import openai
+from .utils import generate_application_letter
 
 @login_required
 def create_letter(request, offer_id):
+    # Holen der Offer-Daten und Sicherstellen, dass der Benutzer zu diesem Angebot gehört
     offer = get_object_or_404(Offer, id=offer_id, user=request.user)
-    user = request.user
 
-    # Dummy-Prompt, ersetze mit deinem echten Prompt
-    prompt = f"""
-    Erstelle ein Bewerbungsschreiben basierend auf folgendem Angebot:
-    Position: {offer.position}
-    Firma: {offer.company}
-    Beschreibung: {offer.offer_text}
+    # Persönliche Daten abrufen
+    pinfo = PInfo.objects.filter(user=request.user).first()
+    if not pinfo:
+        # Optional: Weiterleitung oder Fehlermeldung, falls keine persönlichen Daten vorhanden sind
+        return redirect('job_hunter:personal_data')
 
-    Persönliche Infos:
-    Vorname: {user.first_name}
-    Nachname: {user.last_name}
-    E-Mail: {user.email}
-    """
+    # Name zusammensetzen
+    name = f"{request.user.first_name} {request.user.last_name}"
 
-    # GPT generieren lassen (hier dummy)
-    # Beispiel mit OpenAI, falls du GPT nutzt:
-    # response = openai.ChatCompletion.create(...)
-    # letter_text = response["choices"][0]["message"]["content"]
+    # Text aus persönlicher Info (z.B. Qualifikationen, Motivation, etc.)
+    pinfo_text = f"{pinfo.background}"  # anpassen je nach Feldern
 
-    letter_text = f"""
-    Sehr geehrte Damen und Herren,
+    # GPT-Funktion aufrufen
+    letter_text = generate_application_letter(
+        name=name,
+        p_info=pinfo_text,
+        position=offer.position,
+        comp_name=offer.company,
+        comp_desc=offer.about_company,
+        offer=offer.offer_text
+    )
 
-    mit großem Interesse habe ich Ihre Stellenausschreibung als {offer.position} bei {offer.company} gelesen...
-    """
+    # Brief speichern
+    if letter_text:
+        # Hole oder erstelle die Application-Instanz
+        letter, created = Application.objects.get_or_create(
+            user=request.user,  # Benutzer hinzufügen
+            offer=offer
+        )
+        letter.resume = letter_text  # Setze das Anschreiben
+        letter.save()
 
-    return render(request, "offers/generated_letter.html", {
-        "letter_text": letter_text,
-        "offer": offer
-    })
+    # Weiterleitung zur Ansicht des Briefes
+    return redirect('job_hunter:view_letter', offer_id=offer.id)
 
 
 @login_required
 def view_letter(request, offer_id):
+    # Hole das Angebot und stelle sicher, dass der Benutzer zu diesem Angebot gehört
     offer = get_object_or_404(Offer, id=offer_id, user=request.user)
 
-    # Hier später speichern oder aus DB abrufen
-    letter_text = f"""
-    Sehr geehrte Damen und Herren,
+    # Holen der Application-Instanz für das aktuelle Angebot und den Benutzer
+    letter = get_object_or_404(Application, offer=offer, user=request.user)
 
-    vielen Dank für das Interesse an meiner Bewerbung für {offer.position} bei {offer.company}...
-    """
+    # Der tatsächliche Text des Bewerbungsschreibens
+    letter_text = letter.resume  # Das Bewerbungsanschreiben (resume) aus der DB
 
     return render(request, "offers/generated_letter.html", {
         "letter_text": letter_text,
         "offer": offer
     })
+
 
 class OfferDeleteView(DeleteView):
     model = Offer
