@@ -85,23 +85,24 @@ import dj_database_url
 #         default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
 #     )
 # }
-USE_DJ_DATABASE_URL = (
-    os.getenv("USE_DJ_DATABASE_URL", "true").lower() == "true"
-)
+import dj_database_url
 
-if USE_DJ_DATABASE_URL:
-    DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    }
 else:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST", "localhost"),
-            "PORT": os.getenv("DB_PORT", "5432"),
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'postgres'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
