@@ -5,7 +5,7 @@ from .views import (
     personal_data_view,
     ai_assistant_view,
     search_view,
-    OfferDeleteView
+    OfferDeleteView,
 )
 from . import views
 
@@ -17,7 +17,7 @@ urlpatterns = [
     path("personal-data/", personal_data_view, name="personal_data"),
     path("ai-assistant/", ai_assistant_view, name="ai_assistant"),
     path("search/", search_view, name="search"),
-    path('offer_list/', views.OfferListView.as_view(), name='offer_list'),
+    path("offer_list/", views.OfferListView.as_view(), name="offer_list"),
     path(
         "offer/<int:pk>/", views.OfferDetailView.as_view(), name="offer_detail"
     ),
@@ -29,9 +29,24 @@ urlpatterns = [
         views.OfferUpdateView.as_view(),
         name="offer_edit",
     ),
-    path('offer/<int:pk>/delete/', OfferDeleteView.as_view(), name='offer_delete'),
-    path('offer/<int:offer_id>/create-letter/', views.create_letter, name='create_letter'),
-    path('offer/<int:offer_id>/view-letter/', views.view_letter, name='view_letter'),
-    path('offer/<int:offer_id>/edit-letter/', views.edit_letter, name='edit_letter'),  # Neue URL für Editieren
-
+    path(
+        "offer/<int:pk>/delete/",
+        OfferDeleteView.as_view(),
+        name="offer_delete",
+    ),
+    path(
+        "offer/<int:offer_id>/create-letter/",
+        views.create_letter,
+        name="create_letter",
+    ),
+    path(
+        "offer/<int:offer_id>/view-letter/",
+        views.view_letter,
+        name="view_letter",
+    ),
+    path(
+        "offer/<int:offer_id>/edit-letter/",
+        views.edit_letter,
+        name="edit_letter",
+    ),  # Neue URL für Editieren
 ]

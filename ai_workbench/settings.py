@@ -17,7 +17,14 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["rompion-workbench-14980d8a0750.herokuapp.com", "127.0.0.1", 'www.lohbau.studio', 'lohbau.studio', '.lohbau.studio', '.romanpiontek.me']
+ALLOWED_HOSTS = [
+    "rompion-workbench-14980d8a0750.herokuapp.com",
+    "127.0.0.1",
+    "www.lohbau.studio",
+    "lohbau.studio",
+    ".lohbau.studio",
+    ".romanpiontek.me",
+]
 
 
 # Application definition
@@ -79,13 +86,13 @@ import dj_database_url
 #     )
 # }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'workbench',
-        'USER': 'roman',
-        'PASSWORD': '1984',
-        'HOST': 'localhost',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "workbench",
+        "USER": "roman",
+        "PASSWORD": "1984",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 

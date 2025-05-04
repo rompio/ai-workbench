@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 import openai
 from .utils import generate_application_letter
 
+
 @login_required
 def edit_letter(request, offer_id):
     # Hole das Angebot und stelle sicher, dass der Benutzer zu diesem Angebot gehört
@@ -21,18 +22,18 @@ def edit_letter(request, offer_id):
     letter = get_object_or_404(Application, offer=offer, user=request.user)
 
     # Wenn das Formular gesendet wird, speichern wir die Änderungen
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ApplicationForm(request.POST, instance=letter)
         if form.is_valid():
             form.save()
-            return redirect('job_hunter:view_letter', offer_id=offer.id)
+            return redirect("job_hunter:view_letter", offer_id=offer.id)
     else:
         form = ApplicationForm(instance=letter)
 
-    return render(request, 'offers/edit_letter.html', {
-        'form': form,
-        'offer': offer
-    })
+    return render(
+        request, "offers/edit_letter.html", {"form": form, "offer": offer}
+    )
+
 
 @login_required
 def create_letter(request, offer_id):
@@ -43,7 +44,7 @@ def create_letter(request, offer_id):
     pinfo = PInfo.objects.filter(user=request.user).first()
     if not pinfo:
         # Optional: Weiterleitung oder Fehlermeldung, falls keine persönlichen Daten vorhanden sind
-        return redirect('job_hunter:personal_data')
+        return redirect("job_hunter:personal_data")
 
     # Name zusammensetzen
     name = f"{request.user.first_name} {request.user.last_name}"
@@ -58,21 +59,20 @@ def create_letter(request, offer_id):
         position=offer.position,
         comp_name=offer.company,
         comp_desc=offer.about_company,
-        offer=offer.offer_text
+        offer=offer.offer_text,
     )
 
     # Brief speichern
     if letter_text:
         # Hole oder erstelle die Application-Instanz
         letter, created = Application.objects.get_or_create(
-            user=request.user,  # Benutzer hinzufügen
-            offer=offer
+            user=request.user, offer=offer  # Benutzer hinzufügen
         )
         letter.resume = letter_text  # Setze das Anschreiben
         letter.save()
 
     # Weiterleitung zur Ansicht des Briefes
-    return redirect('job_hunter:view_letter', offer_id=offer.id)
+    return redirect("job_hunter:view_letter", offer_id=offer.id)
 
 
 @login_required
@@ -84,23 +84,30 @@ def view_letter(request, offer_id):
     letter = get_object_or_404(Application, offer=offer, user=request.user)
 
     # Der tatsächliche Text des Bewerbungsschreibens
-    letter_text = letter.resume  # Das Bewerbungsanschreiben (resume) aus der DB
+    letter_text = (
+        letter.resume
+    )  # Das Bewerbungsanschreiben (resume) aus der DB
 
-    return render(request, "offers/generated_letter.html", {
-        "letter_text": letter_text,
-        "offer": offer,
-        "letter": letter  # Wir geben das ganze Letter-Objekt weiter, um den Edit-Link zu ermöglichen
-    })
+    return render(
+        request,
+        "offers/generated_letter.html",
+        {
+            "letter_text": letter_text,
+            "offer": offer,
+            "letter": letter,  # Wir geben das ganze Letter-Objekt weiter, um den Edit-Link zu ermöglichen
+        },
+    )
 
 
 class OfferDeleteView(DeleteView):
     model = Offer
-    template_name = 'offers/offer_confirm_delete.html'
-    context_object_name = 'offer'
-    success_url = reverse_lazy('job_hunter:offer_list')
+    template_name = "offers/offer_confirm_delete.html"
+    context_object_name = "offer"
+    success_url = reverse_lazy("job_hunter:offer_list")
 
     def get_queryset(self):
         return Offer.objects.filter(user=self.request.user)
+
 
 @login_required
 def dashboard_view(request):
@@ -141,7 +148,6 @@ def dashboard_view(request):
     return render(request, "job_hunter/dashboard.html", {"stats": stats})
 
 
-
 @login_required
 def personal_data_view(request):
     pinfo, created = PInfo.objects.get_or_create(user=request.user)
@@ -157,7 +163,6 @@ def personal_data_view(request):
     return render(request, "job_hunter/personal_data.html", {"form": form})
 
 
-
 class OfferListView(ListView):
     model = Offer
     template_name = "offers/offer_list.html"
@@ -167,7 +172,6 @@ class OfferListView(ListView):
         return Offer.objects.filter(user=self.request.user)
 
 
-
 class OfferDetailView(DetailView):
     model = Offer
     template_name = "offers/offer_detail.html"
@@ -175,7 +179,6 @@ class OfferDetailView(DetailView):
 
     def get_queryset(self):
         return Offer.objects.filter(user=self.request.user)
-
 
 
 class OfferCreateView(CreateView):
@@ -198,7 +201,7 @@ class OfferUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("job_hunter:offer_list")
-    
+
     def get_queryset(self):
         return Offer.objects.filter(user=self.request.user)
 

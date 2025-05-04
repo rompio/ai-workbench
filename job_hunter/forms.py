@@ -4,10 +4,12 @@ from .models import PInfo
 from .models import Offer
 from .models import Application
 
+
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['resume']  # Nur das Resume-Feld bearbeiten
+        fields = ["resume"]  # Nur das Resume-Feld bearbeiten
+
 
 class OfferForm(forms.ModelForm):
     class Meta:
