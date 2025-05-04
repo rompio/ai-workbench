@@ -102,7 +102,7 @@ class IndexViewTestCase(TestCase):
     def test_index_view(self):
         self.client.login(username="testuser", password="password")
         response = self.client.get(
-            reverse("job_hunter:index")
+            reverse("job_hunter:dashboard")
         )  # Use the namespace: job_hunter:index
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "job_hunter/index.html")
+        self.assertTemplateUsed(response, "job_hunter/dashboard.html")
