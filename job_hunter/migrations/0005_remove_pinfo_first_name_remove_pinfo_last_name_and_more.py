@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("job_hunter", "0004_alter_application_offer_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

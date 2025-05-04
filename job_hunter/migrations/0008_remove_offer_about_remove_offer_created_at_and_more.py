@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("job_hunter", "0007_remove_pinfo_tools"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
