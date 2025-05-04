@@ -2,13 +2,9 @@ name: Python CI
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 jobs:
   test:
@@ -29,40 +25,40 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      DB_NAME: test_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+
     steps:
-      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up Python
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
-      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Install pre-commit and run hooks
       - name: Install pre-commit
         run: |
           pip install pre-commit
-          pre-commit install  # Install git hooks
+          pre-commit install
 
-      # Run pre-commit hooks (for linting and formatting)
       - name: Run pre-commit hooks
         run: |
           pre-commit run --all-files --verbose
 
-      # Install pytest and pytest-cov
       - name: Install pytest and pytest-cov
         run: |
           pip install pytest pytest-cov
 
-      # Run tests with coverage
       - name: Run tests with coverage
         run: |
-          pytest --cov=job_hunter --cov=users --cov-report=xml  # Adjust module names as needed
+          pytest --cov=job_hunter --cov=users --cov-report=xml
