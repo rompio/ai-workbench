@@ -73,12 +73,21 @@ import os
 import dj_database_url
 
 # Fallback auf SQLite, falls keine DATABASE_URL gesetzt ist
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
+#     )
+# }
 DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'workbench',
+        'USER': 'roman',
+        'PASSWORD': '1984',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

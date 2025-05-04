@@ -102,7 +102,6 @@ class OfferDeleteView(DeleteView):
     def get_queryset(self):
         return Offer.objects.filter(user=self.request.user)
 
-
 @login_required
 def dashboard_view(request):
     user_id = request.user.id
@@ -113,7 +112,7 @@ def dashboard_view(request):
             """
             SELECT 
                 COUNT(o.id) AS total_offers,
-                COUNT(CASE WHEN o.response = 1 THEN 1 END) AS responded_offers,
+                COUNT(CASE WHEN o.response IS TRUE THEN 1 END) AS responded_offers,
                 COUNT(CASE WHEN o.status IS NOT NULL AND o.status != 0 THEN 1 END) AS total_applications,
                 COUNT(CASE WHEN o.status = 1 THEN 1 END) AS open_applications,
                 COUNT(CASE WHEN o.status = 2 THEN 1 END) AS applied_applications,
@@ -123,7 +122,7 @@ def dashboard_view(request):
             LEFT JOIN job_hunter_offer o ON u.id = o.user_id
             WHERE u.id = %s
             GROUP BY u.id;
-        """,
+            """,
             [user_id],
         )
 
@@ -140,6 +139,7 @@ def dashboard_view(request):
             ) = row
 
     return render(request, "job_hunter/dashboard.html", {"stats": stats})
+
 
 
 @login_required
