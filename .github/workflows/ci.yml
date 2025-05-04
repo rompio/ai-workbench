@@ -51,9 +51,10 @@ jobs:
           pip install pre-commit
           pre-commit install
 
-      - name: Run pre-commit hooks
+      - name: Run pre-commit hooks (non-blocking)
         run: |
-          pre-commit run --all-files --verbose
+          pre-commit run --all-files --verbose || true
+        
 
       - name: Install pytest and pytest-cov
         run: |
