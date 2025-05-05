@@ -1,43 +1,36 @@
-# AI Workbench
+# rompion-workbench
 
-Welcome to **AI Workbench** – a platform designed to provide a wide variety of useful AI tools for developers, data scientists, and anyone interested in exploring AI. Whether you're looking for machine learning models, data processing utilities, or custom AI-powered solutions, AI Workbench is your go-to platform.
+**rompion-workbench** is a personal productivity suite built by Roman Piontek. It includes a growing collection of AI-powered tools designed to simplify everyday life.
 
-## Features
+### 🚀 Features
 
-- **AI Models**: Access a variety of pre-trained models that can be used for different applications.
-- **Data Processing**: Utilities to preprocess and clean datasets for AI applications.
-- **Customization**: Easily integrate your own AI models and tools into the platform.
-- **Collaborative**: Open-source and ready for contributions from the community.
+- **Job-Hunter** – helps you track job offers and generate AI-based cover letters
+- **Health-Tracker** – manage nutrition, calories, and daily intake
+- **Movie-Rater** – keep a log of movies you've watched or want to rate
+- **Household-Manager** – organize daily household tasks (WIP)
 
-## Installation
+### 🧠 Purpose
 
-To get started with **AI Workbench**, clone this repository to your local machine:
+This project aims to explore the possibilities of AI-assisted personal organization using modern web development frameworks. User data is only collected as necessary for the functionality of each tool – there is no commercial tracking or analytics.
 
-```bash
-git clone https://github.com/yourusername/ai-workbench.git
-```
+### 🛠 Tech Stack
 
-Navigate to the project directory:
+- Python / Django
+- Bootstrap (UI)
+- OpenAI API (ChatGPT integration)
+- PostgreSQL (Heroku)
+- Git, GitHub
 
-Then, install the required dependencies (you may want to use a virtual environment):
+### 🌍 Deployment
 
-pip install -r requirements.txt
+The app is deployed on [Heroku](https://www.heroku.com/) using PostgreSQL. Local development is SQLite-based (initially) and fully Docker-compatible.
 
-## Usage
+### ⚖️ License & Legal
 
-Once installed, you can start exploring the tools and AI models provided by the platform. You can customize it further by adding your own AI models or tools, or by contributing to the open-source community.
+See:
+- [`/legal/imprint`](#) – Legal Notice
+- [`/legal/privacy-policy`](#) – Privacy Policy
+- [`/legal/terms-of-service`](#) – Terms of Service
 
-## Contributing
-
-We welcome contributions from the community! If you'd like to improve the platform, fix bugs, or add new features, feel free to fork this repository and create a pull request.
-
-Please make sure to follow the code style and include tests for any new functionality you add.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-For any inquiries or suggestions, feel free to reach out via GitHub.
+© 2025 Roman Piontek – rompiontech (not a registered company)
 
