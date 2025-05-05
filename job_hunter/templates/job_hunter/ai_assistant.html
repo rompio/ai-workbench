@@ -9,13 +9,15 @@
 
   <form method="post" id="chat-form">
     {% csrf_token %}
-    <textarea id="message-input" name="message" class="form-control" rows="4" placeholder="Frag den Assistenten..."></textarea>
+    <textarea id="message-input" name="message" class="form-control" rows="4" placeholder="Ask the Assistant..."></textarea>
     <small class="form-text text-muted mt-1">
-      <strong>Hinweis:</strong> Mit <kbd>Enter</kbd> senden, mit <kbd>Shift</kbd> + <kbd>Enter</kbd> neue Zeile.
+      <strong>Hint: Just type! </strong> Use <kbd>Enter</kbd> to send and <kbd>Shift</kbd> + <kbd>Enter</kbd> for line break. <br>If you start your message with the word "MIND" I will remember the Info forever. But I will remember most of what you ever tell me anyhow!
     </small>
-    <button type="submit" class="btn btn-primary mt-2">Senden</button>
+    <br>
+    <button type="submit" class="btn btn-primary mt-2">Send</button>
   </form>
-
+  <br>
+  <a href="{% url 'job_hunter:dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
   {% if ai_reply %}
   <div class="alert alert-info mt-3">
     <strong>Antwort:</strong> {{ ai_reply }}

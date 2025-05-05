@@ -50,7 +50,14 @@ def generate_application_letter(
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def chat_with_gpt(user_id, user_input):
+import tiktoken
+from django.db.models import Q
+
+def count_tokens(text, model="gpt-4"):
+    tokenizer = tiktoken.encoding_for_model(model)
+    return len(tokenizer.encode(text))
+
+def chat_with_gpt(user_id, user_input, model="gpt-4", max_input_tokens=7000):
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
@@ -66,35 +73,58 @@ def chat_with_gpt(user_id, user_input):
         )
         return f"I will remember this: {reminder}"
 
-    # Benutzerprofil auslesen
+    # Profiltext
     try:
         p_info = PInfo.objects.get(user=user)
-        user_profile = f"User: {user.first_name} {user.last_name}, Email: {user.email}, Background: {p_info.background}"
+        profile = f"Name: {user.first_name} {user.last_name}\nEmail: {user.email}\nBackground: {p_info.background}"
     except PInfo.DoesNotExist:
-        user_profile = "User information is unavailable."
+        profile = "No profile available."
 
-    # Letzte 5 Nachrichten holen
-    recent_logs = ChatLog.objects.filter(user=user).order_by('-created_at')[:5]
-    chat_history = "\n".join([
-        f"YOU: {log.user_input}\nCHAT GPT: {log.assistant_response}"
-        for log in reversed(recent_logs)
-    ])
+    profile_tokens = count_tokens(profile)
 
-    # Systemnachricht + aktuelle Eingabe
+    # Alle gespeicherten MIND-Einträge sammeln
+    mind_logs = ChatLog.objects.filter(user=user, user_input__startswith="MIND:").order_by('created_at')
+    mind_text = "\n".join(log.user_input[5:] for log in mind_logs)
+    mind_tokens = count_tokens(mind_text)
+
+    # Token-Budget nach Abzug von Profil, MINDs und prompt-Spielraum
+    reserved_for_prompt = 1000  # bleibt für aktuelle Nachricht + GPT-Antwort
+    remaining_tokens = max_input_tokens - (profile_tokens + mind_tokens + reserved_for_prompt)
+
+    # Chatverlauf (nur so viel wie ins Budget passt)
+    chat_history = []
+    total_history_tokens = 0
+    logs = ChatLog.objects.filter(user=user).exclude(user_input__startswith="MIND").order_by('-created_at')
+
+    for log in logs:
+        pair = f"U: {log.user_input}\nA: {log.assistant_response}"
+        tokens = count_tokens(pair)
+        if total_history_tokens + tokens > remaining_tokens:
+            break
+        chat_history.insert(0, pair)  # Älteste zuerst
+        total_history_tokens += tokens
+
+    # Nachrichten an GPT
+    system_prompt = f"""
+You are a helpful assistant. Here is user information:
+
+{profile}
+
+Known reminders:
+{mind_text}
+
+Recent chat history:
+{'\n'.join(chat_history)}
+    """
+
     messages = [
-        {"role": "system", "content": f"""
-            You are a helpful assistant. Always remember the user's details:
-            {user_profile}
-            Previous conversations:
-            {chat_history}
-        """},
-        {"role": "user", "content": user_input}
+        {"role": "system", "content": system_prompt.strip()},
+        {"role": "user", "content": user_input.strip()}
     ]
 
-    # OpenAI-Request
     try:
         response = openai.chat.completions.create(
-            model="gpt-4",
+            model=model,
             messages=messages,
             temperature=1.0,
             max_tokens=1000,
@@ -103,7 +133,6 @@ def chat_with_gpt(user_id, user_input):
     except Exception as e:
         return f"Error while contacting OpenAI: {str(e)}"
 
-    # Speichern
     ChatLog.objects.create(
         user=user,
         user_input=user_input,
