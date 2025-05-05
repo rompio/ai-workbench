@@ -11,9 +11,7 @@
       </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'job_hunter:offer_create' %}">Create new offer</a>
-
-  <!-- Back Link -->
-  <br><br>
-  <a href="{% url 'job_hunter:dashboard' %}">Back to Dashboard</a>
+  <a href="{% url 'job_hunter:offer_create' %}" class="btn btn-primary">Create new offer</a>
+<br><br>
+  <a href="{% url 'job_hunter:dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
 {% endblock %}

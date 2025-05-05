@@ -14,6 +14,8 @@
     <button type="submit" class="btn btn-primary">Create Letter</button>
   </form>
 
-  <a href="{% url 'job_hunter:view_letter' offer.pk %}" class="btn btn-secondary">View Letter</a>
+  <a href="{% url 'job_hunter:view_letter' offer.pk %}" class="btn btn-primary">View Letter</a>
+  <br><br>
+  <a href="{% url 'job_hunter:offer_list' %}" class="btn btn-secondary">Back to Offers</a>
 
 {% endblock %}
