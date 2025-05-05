@@ -4,21 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}rompion-workbench{% endblock %}</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         .social-icons a {
             font-size: 1.5rem;
             margin-right: 1rem;
             color: #ffffff;
         }
-    
+
         .social-icons a:hover {
             color: #0d6efd; /* Bootstrap blue */
         }
+
         body {
             padding-top: 56px;
+        }
+
+        .nav-link.active {
+            color: #c77dff !important; /* Violett */
+            font-weight: bold;
         }
     </style>
 </head>
@@ -33,12 +41,21 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarResponsive">
                 <!-- Left-aligned links -->
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'job_hunter:dashboard' %}">Job Hunter</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'health_tracker:dashboard' %}">Health Tracker</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'movie_rater:dashboard' %}">Movie Rater</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'household_manager:dashboard' %}">Household Manager</a></li>
+                    {% with request.resolver_match.app_name as current_app %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_app == 'job_hunter' or current_app == 'job-hunter' %}active{% endif %}" href="{% url 'job_hunter:dashboard' %}">Job Hunter</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_app == 'health_tracker' or current_app == 'health-tracker' %}active{% endif %}" href="{% url 'health_tracker:dashboard' %}">Health Tracker</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_app == 'movie_rater' or current_app == 'movie-rater' %}active{% endif %}" href="{% url 'movie_rater:dashboard' %}">Movie Rater</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if current_app == 'household_manager' or current_app == 'household-manager' %}active{% endif %}" href="{% url 'household_manager:dashboard' %}">Household Manager</a>
+                        </li>
+                    {% endwith %}
                 </ul>
-                
 
                 <!-- Right-aligned user section -->
                 <ul class="navbar-nav">
@@ -47,7 +64,6 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Login</a></li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="{% url 'users:register' %}">Register</a></li> -->
                     {% endif %}
                 </ul>
             </div>
