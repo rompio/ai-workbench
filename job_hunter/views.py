@@ -118,17 +118,6 @@ def view_letter(request, offer_id):
         },
     )
 
-
-class OfferDeleteView(DeleteView):
-    model = Offer
-    template_name = "offers/offer_confirm_delete.html"
-    context_object_name = "offer"
-    success_url = reverse_lazy("job_hunter:offer_list")
-
-    def get_queryset(self):
-        return Offer.objects.filter(user=self.request.user)
-
-
 @login_required
 def dashboard_view(request):
     user_id = request.user.id
@@ -183,9 +172,13 @@ def personal_data_view(request):
     return render(request, "job_hunter/personal_data.html", {"form": form})
 
 
+@login_required
+def search_view(request):
+    return render(request, "job_hunter/search.html")
+
 class OfferListView(ListView):
     model = Offer
-    template_name = "offers/offer_list.html"
+    template_name = "job_hunter/offers/offer_list.html"
     context_object_name = "offers"
 
     def get_queryset(self):
@@ -194,7 +187,7 @@ class OfferListView(ListView):
 
 class OfferDetailView(DetailView):
     model = Offer
-    template_name = "offers/offer_detail.html"
+    template_name = "job_hunter/offers/offer_detail.html"
     context_object_name = "offer"
 
     def get_queryset(self):
@@ -204,7 +197,7 @@ class OfferDetailView(DetailView):
 class OfferCreateView(CreateView):
     model = Offer
     form_class = OfferForm
-    template_name = "offers/offer_form.html"
+    template_name = "job_hunter/offers/offer_form.html"
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -217,7 +210,7 @@ class OfferCreateView(CreateView):
 class OfferUpdateView(UpdateView):
     model = Offer
     form_class = OfferForm
-    template_name = "offers/offer_form.html"
+    template_name = "job_hunter/offers/offer_form.html"
 
     def get_success_url(self):
         return reverse_lazy("job_hunter:offer_list")
@@ -226,11 +219,11 @@ class OfferUpdateView(UpdateView):
         return Offer.objects.filter(user=self.request.user)
 
 
-
-@login_required
-def search_view(request):
-    return render(request, "job_hunter/search.html")
-
-class OfferListView(ListView):
+class OfferDeleteView(DeleteView):
     model = Offer
-    template_name = "job_hunter/offer_list.html"
+    template_name = "job_hunter/offers/offer_confirm_delete.html"
+    context_object_name = "offer"
+    success_url = reverse_lazy("job_hunter:offer_list")
+
+    def get_queryset(self):
+        return Offer.objects.filter(user=self.request.user)
