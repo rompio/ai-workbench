@@ -1,19 +1,21 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.text import slugify
 
 
 class Tool(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
 class CustomUser(AbstractUser):
-    is_verified = models.BooleanField(
-        default=False
-    )  # Für die Verwaltung der Verifizierung des Benutzers (z.B. E-Mail-Verifizierung)
-
-    def __str__(self):
-        return self.username
+    is_pro = models.BooleanField(default=False)
+    tools = models.ManyToManyField(Tool, blank=True)

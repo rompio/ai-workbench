@@ -11,7 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
             "first_name",
             "last_name",
             "email",
-            "is_verified",
+            "is_pro",
         ]
 
 
