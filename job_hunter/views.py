@@ -11,6 +11,26 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 import openai
 from .utils import generate_application_letter
+from .utils import chat_with_gpt 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .utils import chat_with_gpt
+
+@login_required
+def ai_assistant_view(request):
+    ai_reply = None
+
+    if request.method == "POST":
+        user_input = request.POST.get("message")
+        if user_input:
+            ai_reply = chat_with_gpt(request.user.id, user_input)
+
+    return render(request, "job_hunter/ai_assistant.html", {
+        "ai_reply": ai_reply,
+    })
+
+
+
 
 
 @login_required
@@ -206,11 +226,11 @@ class OfferUpdateView(UpdateView):
         return Offer.objects.filter(user=self.request.user)
 
 
-@login_required
-def ai_assistant_view(request):
-    return render(request, "job_hunter/ai_assistant.html")
-
 
 @login_required
 def search_view(request):
     return render(request, "job_hunter/search.html")
+
+class OfferListView(ListView):
+    model = Offer
+    template_name = "job_hunter/offer_list.html"

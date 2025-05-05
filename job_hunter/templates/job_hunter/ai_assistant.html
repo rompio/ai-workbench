@@ -1,10 +1,42 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}AI Assistant{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2>AI Assistant</h2>
-  <p>Here you can get AI help with job search, documents, or interview prep.</p>
+<div class="container mt-5">
+  <h2 class="mb-4">AI Assistant</h2>
+
+  <form method="post" id="chat-form">
+    {% csrf_token %}
+    <textarea id="message-input" name="message" class="form-control" rows="4" placeholder="Frag den Assistenten..."></textarea>
+    <small class="form-text text-muted mt-1">
+      <strong>Hinweis:</strong> Mit <kbd>Enter</kbd> senden, mit <kbd>Shift</kbd> + <kbd>Enter</kbd> neue Zeile.
+    </small>
+    <button type="submit" class="btn btn-primary mt-2">Senden</button>
+  </form>
+
+  {% if ai_reply %}
+  <div class="alert alert-info mt-3">
+    <strong>Antwort:</strong> {{ ai_reply }}
+  </div>
+  {% endif %}
 </div>
+
+<script>
+  window.onload = () => {
+    const input = document.getElementById("message-input");
+    const form = document.getElementById("chat-form");
+
+    if (input && form) {
+      input.focus();
+      input.addEventListener("keydown", function(event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          form.submit();
+        }
+      });
+    }
+  };
+</script>
 {% endblock %}
