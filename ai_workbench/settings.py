@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     "users",
     "home",
     "job_hunter",
+    'health_tracker',
+    'movie_rater',
+    'household_manager',
+
 ]
 
 MIDDLEWARE = [
