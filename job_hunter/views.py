@@ -51,7 +51,7 @@ def edit_letter(request, offer_id):
         form = ApplicationForm(instance=letter)
 
     return render(
-        request, "offers/edit_letter.html", {"form": form, "offer": offer}
+        request, "job_hunter/offers/edit_letter.html", {"form": form, "offer": offer}
     )
 
 
@@ -110,7 +110,7 @@ def view_letter(request, offer_id):
 
     return render(
         request,
-        "offers/generated_letter.html",
+        "job_hunter/offers/generated_letter.html",
         {
             "letter_text": letter_text,
             "offer": offer,
