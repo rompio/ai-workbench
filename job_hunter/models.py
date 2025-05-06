@@ -68,6 +68,7 @@ class ChatLog(models.Model):
     user_input = models.TextField()
     assistant_response = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    is_summary = models.BooleanField(default=False)
 
     def __str__(self):
         return f"ChatLog ({self.user.username}) @ {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"

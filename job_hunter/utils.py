@@ -50,6 +50,63 @@ def generate_application_letter(
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+def summarize_chat_history(user, limit=20):
+    # Erst das vollständige QuerySet holen (noch ohne Slice!)
+    unsummarized_qs = ChatLog.objects.filter(
+        user=user,
+        is_summary=False
+    ).exclude(
+        user_input__startswith="MIND:"
+    ).order_by("created_at")
+
+    # Dann die ersten N Einträge als Liste holen
+    logs = list(unsummarized_qs[:limit])
+
+    if not logs:
+        return None
+
+    history = "\n".join(
+        f"U: {log.user_input}\nA: {log.assistant_response}"
+        for log in logs
+    )
+
+    summary_prompt = [
+    {
+        "role": "system",
+        "content": "Summarize the following chat between the user and assistant. Include facts, user preferences, instructions, requests, and any patterns the user expects (e.g., always respond in English)."
+    },
+    {"role": "user", "content": history}
+]
+
+
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=summary_prompt,
+            temperature=0.7,
+            max_tokens=500,
+        )
+        summary = response.choices[0].message.content
+    except Exception as e:
+        return f"Error summarizing: {str(e)}"
+
+    # Als neue MIND-Zeile speichern
+    ChatLog.objects.create(
+        user=user,
+        user_input=f"MIND: {summary}",
+        assistant_response="(auto-summary)",
+        is_summary=True
+    )
+
+    # Einzelne Logs aktualisieren
+    for log in logs:
+        log.is_summary = True
+        log.save()
+
+    return summary
+
+
+
 import tiktoken
 from django.db.models import Q
 
@@ -82,10 +139,34 @@ def chat_with_gpt(user_id, user_input, model="gpt-4", max_input_tokens=7000):
 
     profile_tokens = count_tokens(profile)
 
-    # Alle gespeicherten MIND-Einträge sammeln
-    mind_logs = ChatLog.objects.filter(user=user, user_input__startswith="MIND:").order_by('created_at')
-    mind_text = "\n".join(log.user_input[5:] for log in mind_logs)
+        # Nur neueste MIND-Summary + neuere MINDs einfügen (redundante Inhalte vermeiden)
+    mind_text_parts = []
+
+    # Neueste Zusammenfassung holen
+    summary_log = ChatLog.objects.filter(user=user, is_summary=True).order_by('-created_at').first()
+
+    if summary_log:
+        mind_text_parts.append(summary_log.user_input[5:])  # Ohne "MIND:"
+
+        # Nur MINDs nach der letzten Zusammenfassung
+        newer_minds = ChatLog.objects.filter(
+            user=user,
+            is_summary=False,
+            user_input__startswith="MIND:",
+            created_at__gt=summary_log.created_at
+        ).order_by('created_at')
+    else:
+        # Wenn noch keine Zusammenfassung existiert: alle MINDs nehmen
+        newer_minds = ChatLog.objects.filter(
+            user=user,
+            is_summary=False,
+            user_input__startswith="MIND:"
+        ).order_by('created_at')
+
+    mind_text_parts += [log.user_input[5:] for log in newer_minds]
+    mind_text = "\n".join(mind_text_parts)
     mind_tokens = count_tokens(mind_text)
+
 
     # Token-Budget nach Abzug von Profil, MINDs und prompt-Spielraum
     reserved_for_prompt = 1000  # bleibt für aktuelle Nachricht + GPT-Antwort
@@ -139,4 +220,9 @@ Recent chat history:
         assistant_response=reply
     )
 
+    # 🔁 Zusammenfassung bei Bedarf
+    if ChatLog.objects.filter(user=user, is_summary=False).count() >= 20:
+        summarize_chat_history(user)
+
     return reply
+
