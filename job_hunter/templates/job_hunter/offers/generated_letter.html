@@ -6,7 +6,7 @@
   <div class="card mt-4 p-4">
     <pre style="white-space: pre-wrap;">{{ letter_text }}</pre>
   </div>
-
-  <a href="{% url 'job_hunter:offer_detail' offer.id %}" class="btn btn-secondary mt-3">Zurück zum Angebot</a>
-  <a href="{% url 'job_hunter:edit_letter' offer.id %}"><button>Letter Editieren</button></a>
+  <a href="{% url 'job_hunter:edit_letter' offer.id %}" class="btn btn-primary mt-3">Edit Letter</a>
+  <br>
+  <a href="{% url 'job_hunter:offer_detail' offer.id %}" class="btn btn-secondary mt-3">Back</a>
 {% endblock %}
