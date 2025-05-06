@@ -6,37 +6,54 @@
 {% block content %}
 <div class="container mt-5">
   <h2 class="mb-4">AI Assistant</h2>
+  
+  <!-- Antwort -->
   {% if ai_reply %}
   <div class="alert alert-info mt-3">
     <strong>Antwort:</strong> {{ ai_reply }}
   </div>
   {% endif %}
+
+  <!-- Ladeanzeige -->
+  <div id="loading-indicator" style="display: none;" class="alert alert-warning mt-3">
+    <strong><span class="spinner-border spinner-border-sm"></span> GPT is thinking…</strong>
+  </div>
+
+  <!-- Formular -->
   <form method="post" id="chat-form">
     {% csrf_token %}
     <textarea id="message-input" name="message" class="form-control" rows="4" placeholder="Ask the Assistant..."></textarea>
     <small class="form-text text-muted mt-1">
-      <strong>Hint: Just type! </strong> Use <kbd>Enter</kbd> to send and <kbd>Shift</kbd> + <kbd>Enter</kbd> for line break. <br>If you start your message with the word "MIND" I will remember the Info forever. But I will remember most of what you ever tell me anyhow!
+      <strong>Hint:</strong> Use <kbd>Enter</kbd> to send and <kbd>Shift</kbd> + <kbd>Enter</kbd> for line break. <br>
+      If you start your message with <code>MIND</code>, I’ll remember the info permanently.
     </small>
     <br>
     <button type="submit" class="btn btn-primary mt-2">Send</button>
   </form>
+
   <br>
   <a href="{% url 'job_hunter:dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
-  
 </div>
 
+<!-- JS -->
 <script>
   window.onload = () => {
     const input = document.getElementById("message-input");
     const form = document.getElementById("chat-form");
+    const loader = document.getElementById("loading-indicator");
 
-    if (input && form) {
+    if (input && form && loader) {
       input.focus();
       input.addEventListener("keydown", function(event) {
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
+          loader.style.display = "block";
           form.submit();
         }
+      });
+
+      form.addEventListener("submit", function() {
+        loader.style.display = "block";
       });
     }
   };
