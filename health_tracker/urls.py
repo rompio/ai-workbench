@@ -1,8 +1,11 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 
-app_name = 'health_tracker'
+app_name = "health_tracker"
 
 urlpatterns = [
-    path('', views.dashboard, name='dashboard'),
+    path("week-planner/", include("week_planner.urls", namespace="week_planner")),
+    path("workout/", include("workout.urls", namespace="workout")),
+    path("food/", include("food.urls", namespace="food")),
+    path("profile/", include("users.urls", namespace="users")),
+    path("ai-assistant/", include("ai_assistant.urls", namespace="ai_assistant")),
 ]

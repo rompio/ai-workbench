@@ -1,6 +1,38 @@
-{% extends 'base.html' %}
-{% block title %}Health Tracker{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Health Tracker Dashboard{% endblock %}
+
 {% block content %}
-<h1>Health Tracker</h1>
-<p>This is the starting page for the Health Tracker module.</p>
+<div class="row">
+  <div class="col-md-4">
+    <h2>Navigation</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><a href="{% url 'health_tracker:food_list' %}">Lebensmittel</a></li>
+      <li class="list-group-item"><a href="{% url 'health_tracker:week_overview' %}">Wochenübersicht</a></li>
+      <li class="list-group-item"><a href="{% url 'health_tracker:workout_overview' %}">Workouts</a></li>
+      <li class="list-group-item"><a href="{% url 'health_tracker:ai_assistant' %}">AI-Assistenz</a></li>
+    </ul>
+    <small class="form-text text-muted mt-1">
+      <strong>Hinweis:</strong><br>
+      1. Erfasse deine Mahlzeiten, Workouts und Gesundheitsdaten<br>
+      2. Erstelle und speichere Wochenpläne mit ausgewogener Ernährung<br>
+      3. Nutze die AI-Assistenz zur Analyse und Gesundheitsberatung
+    </small>
+  </div>
+
+  <div class="col-md-8">
+    <h2>Dashboard</h2>
+    {% if stats %}
+      <ul class="list-group">
+        <li class="list-group-item">Gespeicherte Lebensmittel: {{ stats.total_foods }}</li>
+        <li class="list-group-item">Angelegte Wochenpläne: {{ stats.total_weekplans }}</li>
+        <li class="list-group-item">Erfasste Workouts: {{ stats.total_workouts }}</li>
+        <li class="list-group-item">Tägliche Kalorienbilanz (Ø): {{ stats.average_daily_balance }} kcal</li>
+        <li class="list-group-item">Letzter aktiver Tag: {{ stats.last_active_day }}</li>
+      </ul>
+    {% else %}
+      <p>Keine Daten vorhanden.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
