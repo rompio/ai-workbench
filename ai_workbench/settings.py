@@ -24,6 +24,7 @@ ALLOWED_HOSTS = [
     "lohbau.studio",
     ".lohbau.studio",
     ".romanpiontek.me",
+    '.rompion.tech'
 ]
 
 
