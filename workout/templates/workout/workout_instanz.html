@@ -1,0 +1,24 @@
+<form method="POST" action="{% url 'your_view_name' %}">
+    {% csrf_token %}
+    
+    {% for übung in übungen %}
+        <div class="übung-container">
+            <label for="übung_{{ übung.id }}">{{ übung.name }}</label>
+            
+            {% for satz in übung.sätze %}
+                <div class="satz-container">
+                    <label for="satz_{{ übung.id }}_{{ satz.id }}">Satz {{ satz.num }}</label>
+                    
+                    {% for wiederholung in satz.wiederholungen %}
+                        <div class="wiederholung-container">
+                            <span>Wiederholung {{ wiederholung.num }}:</span>
+                            <input type="text" name="gewicht_{{ übung.id }}_{{ satz.id }}_{{ wiederholung.id }}" id="wiederholung_{{ übung.id }}_{{ satz.id }}_{{ wiederholung.id }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    
+    <button type="submit">Speichern</button>
+</form>

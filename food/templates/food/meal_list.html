@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Meals Overview</h1>
+
+<div>
+  <a href="{% url 'food:meal_list_by_date' prev_date %}">&lt; Previous</a>
+  <span>{{ date }}</span>
+  <a href="{% url 'food:meal_list_by_date' next_date %}">Next &gt;</a>
+</div>
+
+<ul>
+  {% for meal_data in meals %}
+    <li>
+      <a href="{% url 'food:detail' meal_data.meal.id date %}">{{ meal_data.meal.name }}</a> - {{ meal_data.kcal_sum }} kcal
+
+      <!-- Button für Detailansicht -->
+      <a href="{% url 'food:nutrient_overview' meal_id=meal_data.meal.id date=date %}" class="btn btn-info">Detailansicht</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- Anzeige des Kalorienziels -->
+<p><strong>Calorie Target: {{ calorie_target }} kcal</strong></p>
+
+<!-- Anzeige der Gesamt-Kalorien mit dynamischer Farbe -->
+<p>
+  <strong 
+    style="color: {% if total_kcal > calorie_target %}red{% else %}green{% endif %};">
+    Total Calories: {{ total_kcal }} kcal
+  </strong>
+</p>
+
+<a href="{% url 'food:create_recipe' %}" class="btn btn-primary">Create Recipe</a>
+<a href="{% url 'food:daily_nutrient_overview' date=date %}" class="btn btn-secondary">Daily Nutrient Overview</a>
+{% endblock %}

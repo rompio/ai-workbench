@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ meal_type }} - NutriFitAI</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ meal_type }} - Meal Planner</h1>
+            <nav>
+                <a href="{% url 'food:week_planner' %}">Week Planner</a>
+                <a href="{% url 'food:lunch' %}">Lunch</a>
+                <a href="{% url 'food:breakfast' %}">Breakfast</a>
+                <a href="{% url 'food:dinner' %}">Dinner</a>
+            </nav>
+        </header>
+
+        {% if error_message %}
+        <div class="alert alert-danger">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <!-- Meal Entries -->
+        <section>
+            <h2>Today's {{ meal_type }}</h2>
+            <ul>
+                {% for entry in meal_entries %}
+                <li>
+                    {{ entry.food_item_name }} - {{ entry.quantity_in_grams }}g 
+                    ({{ entry.calories_per_100g }} kcal per 100g)
+                    <strong>Total:</strong> 
+                    {{ entry.total_calories }} kcal
+                </li>
+                {% empty %}
+                <li>No items added to this meal yet.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Search Form -->
+        <section>
+            <h2>Search for Food</h2>
+            <form method="POST" class="search-form">
+                {% csrf_token %}
+                {{ search_form.search_term.label_tag }}
+                {{ search_form.search_term }}
+                <button type="submit" name="search" class="btn btn-primary">Search</button>
+            </form>
+        </section>
+
+        <!-- Search Results -->
+        {% if search_results %}
+        <section>
+            <h3>Search Results</h3>
+            <ul>
+                {% for food in search_results %}
+                <li>
+                    {{ food.1 }} ({{ food.2 }} kcal per 100g)
+                    <!-- Add Food Form -->
+                    <form method="POST" class="d-inline-block">
+                        {% csrf_token %}
+                        <input type="hidden" name="add-food_item_id" value="{{ food.0 }}">
+                        {{ add_food_form.quantity_in_grams }}
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>&copy; {{ year }} NutriFitAI. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

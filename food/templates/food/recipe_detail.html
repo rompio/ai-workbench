@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ recipe.name }}</h1>
+
+  <h3>Instructions</h3>
+  <p>{{ recipe.instructions }}</p>
+
+  <h3>Ingredients</h3>
+  <ul>
+    {% for ingredient in ingredients %}
+      <li>{{ ingredient.raw_food.name }} - {{ ingredient.amount_in_grams }}g</li>
+    {% empty %}
+      <li>No ingredients available.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'food:add_ingredients' recipe.id %}">Add Ingredients</a>
+{% endblock %}

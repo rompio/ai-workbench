@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Wochenübersicht</h1>
+
+    <div class="week-plan">
+        <div class="days-row">
+            {% for day in days %}
+                <div class="day-column">
+                    <h3>{{ day }}</h3>
+                    <div class="meal-block" onclick="editMeal(this)">Morgens</div>
+                    <div class="meal-block" onclick="editMeal(this)">Mittags</div>
+                    <div class="meal-block" onclick="editMeal(this)">Abends</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'week_planner/styles.css' %}">
+<script src="{% static 'week_planner/scripts.js' %}"></script>
+
+<!-- Modal -->
+<div class="modal" id="foodModal" tabindex="-1" aria-labelledby="foodModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="foodModalLabel">Lebensmittel hinzufügen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="foodSearch" class="form-control" placeholder="Suche nach Lebensmittel" oninput="searchFood()">
+          <ul id="foodResults" class="list-group mt-2"></ul>
+          <div>
+              <label for="foodQuantity">Menge (in Gramm):</label>
+              <input type="number" id="foodQuantity" class="form-control" min="1" step="1">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-primary" id="addFoodButton">Hinzufügen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+{% endblock %}

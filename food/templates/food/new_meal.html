@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Add a New Meal{% endblock %}
+
+{% block content %}
+<h1>Add a New Meal</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="meal_type">Select Meal Type:</label>
+        <select name="meal_type" id="meal_type" class="form-control">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+{% endblock %}

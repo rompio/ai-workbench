@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ meal.name }} - {{ date }}</h1>
+
+<h2>Current Foods</h2>
+<ul>
+    {% if entries %}
+        {% for entry in entries %}
+            <li>{{ entry.name }} ({{ entry.amount_in_grams }}g) - {{ entry.kcal }} kcal</li>
+        {% endfor %}
+    {% else %}
+        <li>No entries for this Meal.</li>
+    {% endif %}
+</ul>
+
+<h2>Add Food</h2>
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- Live-Suche -->
+    <label for="food-search">Suchen Sie ein Nahrungsmittel:</label>
+    <input type="text" id="food-search" name="food-search" autocomplete="off">
+    <ul id="food-results"></ul>
+
+    <br><br>
+
+    <label for="quantity_in_grams">Menge in Gramm:</label>
+    <input type="number" id="quantity_in_grams" name="quantity_in_grams" min="1" step="1">
+
+    <br><br>
+
+    <button type="submit">Add Food</button>
+    <a href="{% url 'food:meal_list_by_date' date %}">
+        <button type="button">Back</button>
+    </a>
+
+    <!-- Fehlernachricht, die initial ausgeblendet ist -->
+    <div id="error-message" style="color: red; display: none;">Bitte füllen Sie sowohl das Nahrungsmittel als auch die Menge aus!</div>
+</form>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(event) {
+    var foodSearch = document.getElementById('food-search').value.trim();
+    var quantityInGrams = document.getElementById('quantity_in_grams').value.trim();
+    var errorMessage = document.getElementById('error-message');
+
+    // Validierung der Felder
+    if (!foodSearch || !quantityInGrams) {
+        event.preventDefault(); // Verhindert das Absenden des Formulars
+
+        // Fehlernachricht anzeigen
+        errorMessage.style.display = 'block'; // Zeigt die Fehlermeldung an
+    } else {
+        // Falls beide Felder ausgefüllt sind, Fehlermeldung ausblenden
+        errorMessage.style.display = 'none';
+    }
+});
+
+document.getElementById('food-search').addEventListener('input', function() {
+    var query = this.value.trim();
+    if (query.length >= 2) {
+        fetch(`/food/search_food/?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                var results = data.results;
+                var resultsList = document.getElementById('food-results');
+                resultsList.innerHTML = '';
+
+                results.forEach(function(item) {
+                    var li = document.createElement('li');
+                    li.textContent = item.name;
+                    li.onclick = function() {
+                        document.getElementById('food-search').value = item.name;
+                        resultsList.innerHTML = '';
+                    };
+                    resultsList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching search results:', error);
+            });
+    } else {
+        document.getElementById('food-results').innerHTML = '';
+    }
+});
+</script>
+{% endblock %}

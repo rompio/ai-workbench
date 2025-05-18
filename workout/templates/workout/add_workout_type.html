@@ -1,0 +1,17 @@
+<form method="POST" action="{% url 'workout:overview' %}">    
+  {% csrf_token %}
+  <!-- Name der Routine -->
+    <label for="name">Routine Name:</label>
+    <input type="text" id="name" name="name" class="form-control" value="{{ TrainingRoutine.name }}", placeholder="Enter routine name" required>
+
+  <!-- Beschreibung der Routine -->
+
+    <label for="beschreibung">Description:</label>
+    <input type="text" id="beschreibung" name="beschreibung" value="{{ TrainingRoutine.beschreibung }}", min="0"><br><br>
+    <input type="hidden" id="{{ name }}" name="{{ name }}" value="{{ value }}">
+    <input type="hidden" id="id" name="id" value="{{ TrainingRoutine.id }}">
+
+  <!-- Submit-Button -->
+  <button type="submit" class="btn btn-primary">{{ button }}</button>
+</form>
+

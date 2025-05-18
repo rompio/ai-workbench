@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>
+    {% if meal %}
+        {{ meal.name }} - Nutritional Overview - {{ date }}
+    {% else %}
+        Daily Nutritional Overview - {{ date }}
+    {% endif %}
+</h1>
+
+<h2>All {{ meal.name|default:"Meals of the Day" }}</h2>
+<ul>
+    {% if entries %}
+        {% for entry in entries %}
+            <li>{{ entry.name }} ({{ entry.amount_in_grams }}g) - {{ entry.kcal }} kcal</li>
+        {% endfor %}
+    {% else %}
+        <li>No entries for this date.</li>
+    {% endif %}
+</ul>
+
+<h2>Nutritional Overview</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nutrient</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for nutrient, value in total_nutrients.items %}
+            <tr>
+                <td>{{ nutrient }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'food:meal_list_by_date' date %}" class="btn btn-secondary">Back to Meals Overview</a>
+{% endblock %}

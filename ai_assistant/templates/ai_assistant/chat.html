@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant - NutriFitAI{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">AI-Assistant</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="userMessage" class="form-label">Deine Nachricht:</label>
+                <textarea id="userMessage" class="form-control" rows="4" placeholder="Gib hier deine Frage ein..."></textarea>
+            </div>
+            <button class="btn btn-primary w-100" onclick="sendMessage()">Senden</button>
+        </div>
+    </div>
+    <div id="response-container" class="mt-4 d-none">
+        <h5>Antwort:</h5>
+        <p id="response" class="alert alert-secondary"></p>
+    </div>
+</div>
+
+<script>
+    async function sendMessage() {
+        const userMessage = document.getElementById("userMessage").value.trim();
+        const responseContainer = document.getElementById("response-container");
+        const responseElement = document.getElementById("response");
+
+        // Reset response container
+        responseContainer.classList.add("d-none");
+        responseElement.innerText = "";
+
+        // Check for empty input
+        if (!userMessage) {
+            alert("Bitte gib eine Nachricht ein.");
+            return;
+        }
+
+        // Debugging log for user input
+        console.log("Gesendete Nachricht:", userMessage);
+
+        try {
+            const response = await fetch("{% url 'ai_assistant:ai_assistant' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            // Parse the JSON response
+            const data = await response.json();
+            console.log("Server Response:", data);
+
+            if (response.ok) {
+                // Display the response in the container
+                responseElement.innerText = data.response;
+            } else {
+                // Display error message
+                responseElement.innerText = data.error || "Ein Fehler ist aufgetreten.";
+            }
+
+            responseContainer.classList.remove("d-none");
+        } catch (error) {
+            // Handle fetch error
+            console.error("Fetch Error:", error);
+            responseElement.innerText = "Fehler bei der Kommunikation mit dem Server.";
+            responseContainer.classList.remove("d-none");
+        }
+    }
+
+    // Helper function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+{% endblock %}

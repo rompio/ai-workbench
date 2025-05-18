@@ -1,0 +1,120 @@
+##### TODOS IDEEN #####
+
+
+bei ubungen hinzufügen von kcal wertberechnung ka
+
+TODO - Tages bedarf / ht
+max Weerte
+
+Fitness uhren und co Schnittstellen + Android schnittstelle ggf
+IOS für GPS daten
+-- Distanz
+-- Puls
+
+Admin Bereich machen
+
+
+Ziele Festlegen
+
+
+-- Daten befüllen alle tabekken
+beispiel berechnung für dne kcal verbrauch
+
+Kategorien bei übungen hinzufügen
+bsp kettlebell, freihantel, ...
+suche optimieren
+
+Planer erstellen für zukünftiges vorhaben
+
+Bei der Trainingsroutine so bauen, dass man wenn man lust hat auch auch gleich trainingspläne erstellen kann. - aber erst mal noch nicht so wichtig
+
+
+
+LUST: Elegantere lösungen finden dynamishcere
+
+Kapput spielen
+
+Auflistung der aktivitäten
+
+Sonntag 
+erste phase
+-> template wid satz trainingsplan editrbar Template - erledigt
+-> view ansteuerbar - erledigt
+-> alle werte hinein laden erledigt
+-> editierbare alle werte
+zweite phase
+-> instanz template laden
+-> werte in die Instanz laden
+-> erstellen
+--> editierbare
+
+dritte phase
+-> vpn bibliottesnte
+--> VPN liste erstellen und liste durchgehen
+---> vpn liste kombinieren, durchgehen + naherwertrechner aufrufen und controll wert abrufen
+-----> Webscrapler so umbauen, dass nach jedes Lebensmittel aus der großen Liste ein IP wechsel macht
+------> mehr laden aktiviere bis zu 6 mal
+-------> verkettunhg mit randomisierung
+
+#############################
+Aktuelle aufgaben
+############################
+
+- Datenbank hinein sschreiben für die instanz kontrollieren
+
+- sämtliche modelle interatkion verbessern
+---- Variablen überprüfung hinein bauen, wo es sinn macht
+---- user controlle darf er hier rein hinein packen
+---- fehlermeldung ausgeben
+---- löschmöglichkeit für spalten hinzufügen
+
+-aktivitäten
+--- aktivitäten anzeigen
+--- editierbare aktivitäten sowie löschbar
+
+- Templates an den neuen Aufgaben anpassen
+--- Bei fehlermeldung makierungen einbauen
+--- Information was schief gegangen instanz
+--- lösch option für komplette paket als auch einzelne teile (bps +bungen im trainingsplan)
+
+- "Routing"
+--- User wird bei eintragen von daten auf der Seite bleiben
+--- Wenn irgendwo hingesprungen wird, dann dort wo es sinn macht
+--- dort die menue bar hinein laden wo die sinn macht, falls noch nicht erledigt
+
+- Daten für übungen erweitern
+---- welcher muskel bei welcher übung zu einsatz kommt mit openai und script einpfelgen
+---- neue spalte - Was für eine Kategorie der übung angehört (Kettlebell, Kurzhantel, Langhantel, hantel, Machine, Eigengewicht, Stange)
+---- kcal für übung hinein packen
+
+- instanz
+---- erweitar bare anzahl an Sätze und wiederholung, falls der user  gerne mehr machen möchte
+
+- APIS
+---- google maps einpfelgen
+---- Fitness Uhren und Pulsbänder
+
+- openai
+---- Coaching
+------- Coaching nafragen -> daten aus aktivitäten und dne instanzen / Trainingsplan
+---- Auswertung
+------ Zeigen woran gearbeitet werden sollte, bzw. wo etwsa unoptimal läuft
+
+- Test einführen
+--- für jede Methode ein test schreiben, der es auf Herz und Niere testet
+
+
+beschreibubng., Notiz
+
+Sprach wechsel
+--- Tabellen -> für Einzelne bereiche --> mit verschiedene Sprach coloms (Deutsch, Englisch ...)
+--- Hard gecodete bezeichnungen entfernen und mit Platzhalter ersetzen
+
+
+-------------------------------------------------------
+Abseits von Workout
+
+- optional 2 Faktor Authentifizierung
+--- eine über App
+--- Secruity Schlüssel zulassen
+

@@ -1,0 +1,19 @@
+<form method="POST" action="{% url 'workout:overview' %}">    
+    {% csrf_token %}
+    <div>
+        <label for="name">Trainingsplan: :</label>
+        {% for trainingsplan in traininsplans_ %}
+        {% for trainingsplan_ in traininsplans %}
+        {% if trainingsplan_.id == trainingsplan.trainingsplan.id %}
+          <button type="submit" name="selected_trainingsplan_instanz" value="{{ trainingsplan.id }}" class="btn btn-primary">
+            {{ trainingsplan_.name }}
+          </button>
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+          
+
+      </div>
+    </form>
+
+    HAALLO

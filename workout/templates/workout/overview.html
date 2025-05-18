@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Meal Overview{% endblock %}
+
+{% block content %}
+
+<h1>Welcome, {{ request.user.username }}</h1>
+<p>start your new Live:</p>
+
+
+<form method="POST" action="{% url 'workout:overview' %}">
+    {% csrf_token %}
+    <button type="submit" name="button" value="Activity" class="btn btn-primary">Activity</button>
+    <button type="submit" name="button" value="Training concept" class="btn btn-primary">Training concept</button>
+    <button type="submit" name="button" value="Training Plan" class="btn btn-primary">Training Plan</button>
+    <button type="submit" name="button" value="Training Plan instanz" class="btn btn-primary">Training Plan instanz</button>
+</form>
+
+
+{{ html_content|safe }}
+
+
+{% endblock %}

@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'health_tracker',
     'movie_rater',
     'household_manager',
+    # unterapps von health_tracker:
+    'food',
+    'week_planner',
+    'workout',
+    'ai_assistant'
 
 ]
 

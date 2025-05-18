@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add Ingredients to {{ recipe.name }}</h1>
+
+<form method="POST" id="add-ingredient-form">
+    {% csrf_token %}
+
+    <!-- Ingredient Search -->
+    <label for="ingredient_search">Search Ingredient:</label>
+    <input 
+        type="text" 
+        id="ingredient_search" 
+        name="ingredient_search" 
+        placeholder="Type to search..." 
+        autocomplete="off" 
+        required>
+    <div id="ingredient_dropdown" style="position: relative; z-index: 1000;">
+        <!-- Dropdown options will be populated dynamically -->
+    </div>
+
+    <br><br>
+
+    <!-- Ingredient Amount -->
+    <label for="ingredient_amount">Amount in Grams:</label>
+    <input 
+        type="number" 
+        id="ingredient_amount" 
+        name="ingredient_amount" 
+        min="1" 
+        step="1" 
+        required>
+
+    <br><br>
+
+    <!-- Submit Buttons -->
+    <button type="submit">Add Ingredient</button>
+    
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("ingredient_search");
+        const dropdown = document.getElementById("ingredient_dropdown");
+
+        // Debounce Timer
+        let debounceTimer;
+
+        // Function to handle the search query
+        function searchIngredients(query) {
+            if (!query) {
+                dropdown.innerHTML = "";
+                return;
+            }
+
+            fetch(`/food/search_food?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    dropdown.innerHTML = "";
+
+                    data.results.forEach(item => {
+                        const option = document.createElement("div");
+                        option.textContent = item.name;
+                        option.dataset.id = item.id;
+                        option.style.cursor = "pointer";
+                        option.style.padding = "5px";
+                        option.style.border = "1px solid #ccc";
+                        option.style.background = "#fff";
+
+                        // Highlight on hover
+                        option.addEventListener("mouseenter", () => {
+                            option.style.background = "#f0f0f0";
+                        });
+
+                        option.addEventListener("mouseleave", () => {
+                            option.style.background = "#fff";
+                        });
+
+                        // Select ingredient
+                        option.addEventListener("click", () => {
+                            searchInput.value = item.name;
+                            searchInput.dataset.selectedId = item.id;
+                            dropdown.innerHTML = "";
+                        });
+
+                        dropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching ingredients:", error));
+        }
+
+        // Add event listener for input changes with debounce
+        searchInput.addEventListener("input", (e) => {
+            const query = e.target.value.trim();
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => searchIngredients(query), 300); // Debounce for 300ms
+        });
+
+        // Handle form submission
+        const form = document.getElementById("add-ingredient-form");
+        form.addEventListener("submit", (e) => {
+            const selectedId = searchInput.dataset.selectedId;
+
+            // Ensure the selected ingredient is valid
+            if (!selectedId) {
+                e.preventDefault();
+                alert("Please select a valid ingredient from the dropdown.");
+            } else {
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "ingredient_id";
+                hiddenInput.value = selectedId;
+                form.appendChild(hiddenInput);
+            }
+        });
+        option.addEventListener("click", () => {
+            searchInput.value = item.name;
+            searchInput.dataset.selectedId = item.id;
+            dropdown.innerHTML = "";
+        });
+        
+    });
+</script>
+{% endblock %}

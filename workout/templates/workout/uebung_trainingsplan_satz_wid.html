@@ -1,0 +1,54 @@
+<form method="POST" action="{% url 'workout:overview' %}"> 
+    {% csrf_token %}
+    
+    <input type="text" id="name" name="name" class="form-control" placeholder="Enter trainingsplan Name" value="{{ trainingsplan.name }}" required>
+
+    <!-- Beschreibung der Routine -->
+
+      <label for="beschreibung">Description:</label>
+      <input type="text" id="beschreibung" name="beschreibung" value="{{ trainingsplan.beschreibung }}" min="0"><br><br>
+
+    {% for ub in übung %}
+        <div>
+            <label>{{ ub.übung.name }}</label>
+            <input type="hidden" name="übung" value="{{ ub.id }}">
+        </div>
+        
+        <div>
+            <label >Anazahl Sätze</label>
+            <input type="text" name="satz" value="{{ub.satz}}">
+        </div>
+        
+        <div>
+            <label >Anazahl Wiederholung</label>
+            <input type="text" name="Wiederholung" value="{{ub.wiederholung}}">
+        </div>
+    {% endfor %}
+
+    <label for="name">Trainingplan Name:</label>
+      
+
+    <input type="hidden" id="Trainingplan" name="Trainingplan" value="addworktype_" min="0"><br><br>
+
+    <select id="exercise" name="exercise" multiple>
+        {% for exercise in ÜbungenKrafttraining %}
+            <option name="ÜbungenKrafttraining" value="{{ exercise.id }}">{{ exercise.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+      <label for="selected_options">Workout-Type</label>
+      <select id="selected_options" name="workoutroutine" multiple>
+        <option>optional</option>
+          {% for workoutroutine in workoutroutine %}
+                <option name="workoutroutine" value="{{ workoutroutine.id }}">{{ workoutroutine.name }}</option>
+            {% endfor %}
+      </select>
+
+    </select><br><br>
+    <input type="hidden" name="id_trainingsplan" value="{{ trainingsplan.id }}">
+  
+    <button type="submit" name="new trainingsplan" value="new trainingsplan" class="btn btn-primary">Anpassung / Festlegung der Geplanten Sätze und Wiederholung</button>
+</form>
+<div>Trainingsplan_satz_wid HTML </div>
+
+{{ trainingsplan.name }}

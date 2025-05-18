@@ -1,0 +1,14 @@
+<form method="POST" action="{% url 'workout:overview' %}">    
+  {% csrf_token %}
+  <div>
+      {% for routine in routines %}
+        <button type="submit" name="selected_routine" value="{{ routine.id }}" class="btn btn-primary">
+          {{ routine.name }}
+        </button>
+        {% endfor %}
+        <button type="submit" name="button" value="erstelle neue Trainings Routine" class="btn btn-primary">
+          erstelle neue Trainings Routine
+          </button>
+      
+    </div>
+  </form>

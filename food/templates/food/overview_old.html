@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Lebensmittelsuche</h1>
+    <form method="GET" action="{% url 'food:overview' %}">
+        <div class="row">
+            <!-- Suchbegriff -->
+            <div class="col-md-4 mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Suchbegriff eingeben..." value="{{ query }}" required>
+            </div>
+
+            <!-- Land auswählen -->
+            <div class="col-md-4 mb-3">
+                <select name="country" class="form-select">
+                    <option value="all" {% if country == 'all' or not country %}selected{% endif %}>Alle Länder</option>
+                    <option value="Germany" {% if country == 'Germany' %}selected{% endif %}>Deutschland</option>
+                    <option value="France" {% if country == 'France' %}selected{% endif %}>Frankreich</option>
+                    <option value="United States" {% if country == 'United States' %}selected{% endif %}>USA</option>
+                    <!-- Weitere Länder hinzufügen -->
+                </select>
+            </div>
+
+            <!-- Kategorie auswählen -->
+            <div class="col-md-4 mb-3">
+                <input type="text" name="category" class="form-control" placeholder="Kategorie (z. B. Schokolade)" value="{{ category }}">
+            </div>
+
+            <!-- Marke auswählen -->
+            <div class="col-md-4 mb-3">
+                <input type="text" name="brand" class="form-control" placeholder="Marke (z. B. Milka)" value="{{ brand }}">
+            </div>
+        </div>
+
+        <!-- Suchbutton -->
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary" type="submit">Suchen</button>
+            </div>
+        </div>
+    </form>
+
+    {% if results %}
+    <h2>Suchergebnisse</h2>
+    <ul>
+        {% for item in results %}
+        <li>
+            <a href="{% url 'food:detail' item.code %}">
+                {{ item.product_name }} ({{ item.brands }})
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Keine Produkte gefunden. Versuchen Sie es mit anderen Filtern.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+

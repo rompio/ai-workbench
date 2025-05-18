@@ -1,0 +1,22 @@
+<form method="POST" action="{% url 'workout:overview' %}">    
+    {% csrf_token %}
+    <div>
+        <label for="name">Trainingsplan: :</label>
+        {% for trainingsplan in traininsplans %}
+          <button type="submit" name="selected_trainingsplan_instanz" value="{{ trainingsplan.id }}" class="btn btn-primary">
+            {{ trainingsplan.name }}
+          </button>
+          {% endfor %}
+          
+        
+    <div>
+            <label for="name">Routine Name:</label>
+                {% for routine in workoutroutine %}
+            <button type="submit" name="selected_routine_instanz" value="{{ routine.id }}" class="btn btn-primary">
+                    {{ routine.name }}
+            </button>
+                  {% endfor %}                            
+    </div>
+
+      </div>
+    </form>

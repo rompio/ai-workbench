@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Recipe</h1>
+<form method="POST">
+    {% csrf_token %}
+    
+    <label for="recipe_name">Recipe Name:</label>
+    <input type="text" id="recipe_name" name="recipe_name" required>
+
+    <br><br>
+
+    <label for="instructions">Instructions:</label>
+    <textarea id="instructions" name="instructions" rows="5" cols="40" required></textarea>
+
+    <br><br>
+
+    <button type="submit">Create Recipe</button>
+</form>
+
+<h2>Edit Existing Recipe</h2>
+<!-- Dropdown für das Editieren eines Rezepts -->
+<label for="edit-recipe">Select a Recipe to Edit:</label>
+<select id="edit-recipe">
+    <option value="">-- Select Recipe --</option>
+    {% for recipe in food_recipes %}
+        <option value="{{ recipe.id }}">{{ recipe.name }}</option>
+    {% endfor %}
+</select>
+
+
+<br><br>
+
+<!-- Button zum Bearbeiten eines Rezepts -->
+<button type="button" id="edit-recipe-button">Edit Recipe</button>
+<p id="edit-error-message" style="color: red; display: none;">Please select a recipe to edit.</p>
+
+<script>
+    document.getElementById('edit-recipe-button').addEventListener('click', function() {
+        var selectedRecipeId = document.getElementById('edit-recipe').value;
+        var errorMessage = document.getElementById('edit-error-message');
+    
+        if (!selectedRecipeId) {
+            errorMessage.style.display = 'block'; // Zeige Fehlermeldung an
+        } else {
+            errorMessage.style.display = 'none'; // Blende die Fehlermeldung aus
+            // Weiterleitung zur korrekten URL
+            window.location.href = '/food/recipe/' + selectedRecipeId + '/';
+        }
+    });
+    
+
+document.querySelectorAll('.food-search').forEach(function(input) {
+    input.addEventListener('input', function() {
+        var query = this.value.trim();
+        var resultsList = this.nextElementSibling;  // ul for food results
+        var ingredientContainer = this.closest('.ingredient');
+        var foodIdInput = ingredientContainer.querySelector('.ingredient-id');
+        var amountInput = ingredientContainer.querySelector('.quantity_in_grams');
+
+        if (query.length >= 2) {
+            fetch(`/food/search_food/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    var results = data.results;
+                    resultsList.innerHTML = '';
+
+                    results.forEach(function(item) {
+                        var li = document.createElement('li');
+                        li.textContent = item.name;
+                        li.onclick = function() {
+                            input.value = item.name;
+                            foodIdInput.value = item.id;
+                            resultsList.innerHTML = '';
+                        };
+                        resultsList.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching search results:', error);
+                });
+        } else {
+            resultsList.innerHTML = '';
+        }
+    });
+});
+
+// Füge einen neuen Zutatenblock hinzu
+document.getElementById('add-ingredient-button').addEventListener('click', function() {
+    var ingredientsContainer = document.getElementById('ingredients-container');
+    var newIngredientDiv = document.createElement('div');
+    newIngredientDiv.classList.add('ingredient');
+    newIngredientDiv.innerHTML = `
+        <label for="food-search">Search for Food:</label>
+        <input type="text" class="food-search" name="food-search" autocomplete="off">
+        <ul class="food-results"></ul>
+
+        <br><br>
+
+        <label for="quantity_in_grams">Amount in Grams:</label>
+        <input type="number" class="quantity_in_grams" name="quantity_in_grams" min="1" step="1" required>
+
+        <input type="hidden" name="ingredients[]" class="ingredient-id">
+        <input type="hidden" name="amounts[]" class="ingredient-amount">
+    `;
+    ingredientsContainer.appendChild(newIngredientDiv);
+
+    // Füge das Event für die neue Zutaten-Suchfunktion hinzu
+    newIngredientDiv.querySelector('.food-search').addEventListener('input', function() {
+        var query = this.value.trim();
+        var resultsList = this.nextElementSibling;  // ul for food results
+        var ingredientContainer = this.closest('.ingredient');
+        var foodIdInput = ingredientContainer.querySelector('.ingredient-id');
+        var amountInput = ingredientContainer.querySelector('.quantity_in_grams');
+
+        if (query.length >= 2) {
+            fetch(`/food/search_food/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    var results = data.results;
+                    resultsList.innerHTML = '';
+
+                    results.forEach(function(item) {
+                        var li = document.createElement('li');
+                        li.textContent = item.name;
+                        li.onclick = function() {
+                            this.closest('.ingredient').querySelector('.food-search').value = item.name;
+                            foodIdInput.value = item.id;
+                            resultsList.innerHTML = '';
+                        };
+                        resultsList.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching search results:', error);
+                });
+        } else {
+            resultsList.innerHTML = '';
+        }
+    });
+});
+</script>
+{% endblock %}

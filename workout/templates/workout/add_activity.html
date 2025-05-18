@@ -1,0 +1,20 @@
+<form method="POST" action="{% url 'workout:overview' %}">
+    {% csrf_token %}
+    <label for="aktivität">Aktivität:</label>
+    <select id="aktivität" name="aktivität">
+        {% for aktivität in aktivitäten %}
+            <option value="{{ aktivität.id }}">{{ aktivität.name }}</option>
+        {% endfor %}
+    </select><br><br>
+    <label for="datum">Datum:</label>
+    <input type="date" id="datum" name="datum" value="{{ heutiges_datum|date:'Y-m-d' }}" required><br><br>    <label for="dauer">Dauer (in Minuten):</label>
+    <input type="number" id="dauer" name="dauer" step="0.1" min="0"><br><br>
+    <label for="distanz">Distanz (in km):</label>
+    <input type="number" id="distanz" name="distanz" step="0.1" min="0"><br><br>
+    <input type="hidden" type="text" id="puls" name="puls"><br><br>
+    <label for="max_puls">Maximaler Puls:</label>
+    <input type="number" id="max_puls" name="max_puls" min="0"><br><br>
+    <label for="höhenmeter">Höhenmeter:</label>
+    <input type="number" id="höhenmeter" name="höhenmeter" step="0.1" min="0"><br><br>
+    <button type="submit">Absenden</button>
+</form>

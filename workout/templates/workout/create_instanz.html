@@ -1,0 +1,21 @@
+
+<form method="post"  action="{% url 'workout:overview' %}">
+    {% csrf_token %}
+    <option name="id_trainingsplan" value="{{ id_ }}">{{ übung.name }}</option>
+    <input type="hidden" name="id_trainingsplan" value="{{ id_ }}" />
+    {% for übung in hauptebene.kraftübungen %}
+      <option name="ÜbungenKrafttraining" value="{{ übung.id }}">{{ übung.name }}</option>
+      <input type="hidden" name="ÜbungenKrafttraining" value="{{ übung.id }}" />
+      {% for satza in übung.sätze %}
+      {% for satz in satza.count %}
+        <h3>Satz {{satz}}</h3>
+        <input type="hidden" name="satz_list" value="{{satz}}" />
+        {% for w in satza.wiederholungen %}
+          <input type="text" name="wid_value" />
+        {% endfor %}
+        <input type="hidden" name="wid_value" value="|">
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+    <button type="submit" name="Create Instanz" value="Create Instanz">Create Instanz</button>
+  </form>

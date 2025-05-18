@@ -7,27 +7,37 @@
   <div class="col-md-4">
     <h2>Navigation</h2>
     <ul class="list-group">
-      <li class="list-group-item"><a href="{% url 'health_tracker:food_list' %}">Lebensmittel</a></li>
-      <li class="list-group-item"><a href="{% url 'health_tracker:week_overview' %}">Wochenübersicht</a></li>
-      <li class="list-group-item"><a href="{% url 'health_tracker:workout_overview' %}">Workouts</a></li>
-      <li class="list-group-item"><a href="{% url 'health_tracker:ai_assistant' %}">AI-Assistenz</a></li>
+      <li class="list-group-item">
+        <a href="{% url 'week_planner:overview' %}">Wochenplan</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{% url 'food:overview' %}">Ernährung</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{% url 'workout:overview' %}">Sport</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{% url 'ai_assistant:ai_assistant' %}">AI‑Assistenz</a>
+      </li>
     </ul>
+
     <small class="form-text text-muted mt-1">
       <strong>Hinweis:</strong><br>
-      1. Erfasse deine Mahlzeiten, Workouts und Gesundheitsdaten<br>
-      2. Erstelle und speichere Wochenpläne mit ausgewogener Ernährung<br>
-      3. Nutze die AI-Assistenz zur Analyse und Gesundheitsberatung
+      1.&nbsp;Erfasse deine Mahlzeiten, Workouts und Gesundheitsdaten<br>
+      2.&nbsp;Erstelle und speichere Wochenpläne mit ausgewogener Ernährung<br>
+      3.&nbsp;Nutze die AI‑Assistenz zur Analyse und Gesundheitsberatung
     </small>
   </div>
 
   <div class="col-md-8">
     <h2>Dashboard</h2>
+
     {% if stats %}
       <ul class="list-group">
         <li class="list-group-item">Gespeicherte Lebensmittel: {{ stats.total_foods }}</li>
         <li class="list-group-item">Angelegte Wochenpläne: {{ stats.total_weekplans }}</li>
         <li class="list-group-item">Erfasste Workouts: {{ stats.total_workouts }}</li>
-        <li class="list-group-item">Tägliche Kalorienbilanz (Ø): {{ stats.average_daily_balance }} kcal</li>
+        <li class="list-group-item">Tägliche Kalorienbilanz (Ø): {{ stats.average_daily_balance }} kcal</li>
         <li class="list-group-item">Letzter aktiver Tag: {{ stats.last_active_day }}</li>
       </ul>
     {% else %}

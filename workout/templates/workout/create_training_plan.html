@@ -1,0 +1,36 @@
+<form method="POST" action="{% url 'workout:overview' %}">    
+    {% csrf_token %}
+    
+    <!-- Name der Routine -->
+      <label for="name">Trainingplan Name:</label>
+      <input type="text" id="name" name="name" class="form-control" placeholder="Enter routine name" required>
+
+    <!-- Beschreibung der Routine -->
+
+      <label for="beschreibung">Description:</label>
+      <input type="text" id="beschreibung" name="beschreibung" min="0"><br><br>
+
+    <input type="hidden" id="Trainingplan" name="Trainingplan" value="addworktype_" min="0"><br><br>
+
+    <select id="exercise" name="exercise" multiple>
+        {% for exercise in ÜbungenKrafttraining %}
+            <option name="ÜbungenKrafttraining" value="{{ exercise.id }}">{{ exercise.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+      <label for="selected_options">Workout-Type</label>
+      <select id="selected_options" name="workoutroutine" multiple>
+        <option>optional</option>
+          {% for workoutroutine in workoutroutine %}
+                <option name="workoutroutine" value="{{ workoutroutine.id }}">{{ workoutroutine.name }}</option>
+            {% endfor %}
+      </select>
+
+    </select><br><br>
+    <!-- Submit-Button -->
+    <button type="submit" name="create Trainingplan " value="create Trainingplan" class="btn btn-primary">create Trainingplan </button>
+  
+  
+  
+  </form>
+

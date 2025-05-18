@@ -1,0 +1,19 @@
+.day-column {
+    position: relative;
+}
+
+.calorie-balance {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    font-size: 1.2em;
+    text-align: center;
+    background-color: rgba(0, 128, 0, 0.5);  /* Grün für positive Bilanz */
+    color: white;
+    padding: 5px;
+}
+
+.calorie-balance-negative {
+    background-color: rgba(255, 0, 0, 0.5);  /* Rot für negative Bilanz */
+}
