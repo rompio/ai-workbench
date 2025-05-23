@@ -6,10 +6,9 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}  <!-- Formular wird hier angezeigt -->
-        <button type="submit">Änderungen speichern</button>
+        <a href="{% url 'job_hunter:edit_letter' offer.id %}" class="btn btn-primary mt-3">Save changes</a>
     </form>
 
-    <a href="{% url 'job_hunter:view_letter' offer.id %}">
-        <button>Zurück zum Bewerbungsschreiben</button>
-    </a>
+    <a href="{% url 'job_hunter:view_letter' offer.id %}" class="btn btn-secondary mt-3">Back</a>
 {% endblock %}
+

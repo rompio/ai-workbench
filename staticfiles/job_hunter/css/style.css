@@ -1,0 +1,17 @@
+body {
+  background-color: yellow !important;
+}
+
+
+.offer-item {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+  
+  .status-1 { background-color: #fff8b3; }     /* Open - yellow */
+  .status-2 { background-color: #cce5ff; }     /* Applied - light blue */
+  .status-3 { background-color: #f8d7da; }     /* Rejected - light red */
+  .status-4 { background-color: #d4edda; }     /* Accepted - light green */
+  .status-0, .status-null { background-color: #f0f0f0; } /* Default/None */
+  
