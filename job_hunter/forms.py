@@ -8,7 +8,14 @@ from .models import Application
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ["resume"]  # Nur das Resume-Feld bearbeiten
+        fields = ["resume"]
+        widgets = {
+            "resume": forms.Textarea(attrs={
+                "rows": 25,        # Höhe
+                "style": "width: 100%;",  # volle Breite
+                "class": "form-control",  # falls du Bootstrap nutzt
+            }),
+        }
 
 
 class OfferForm(forms.ModelForm):
