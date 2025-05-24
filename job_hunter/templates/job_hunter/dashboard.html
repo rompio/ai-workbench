@@ -5,6 +5,7 @@
 {% block content %}
 <div class="row">
   <div class="col-md-4">
+    <h1>Job Hunter</h1>
     <h2>Navigation</h2>
     <ul class="list-group">
       <li class="list-group-item"><a href="{% url 'job_hunter:personal_data' %}">Personal Data</a></li>
@@ -18,6 +19,7 @@
   </div>
 
   <div class="col-md-8">
+    <h1><br></h1>
     <h2>Dashboard</h2>
     {% if stats %}
       <ul class="list-group">

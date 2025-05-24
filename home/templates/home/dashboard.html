@@ -35,7 +35,7 @@
 
 <div class="page-wrapper">
   <div class="container content-wrapper text-white">
-    <h1>Willkommen {{ user.username }} 👋</h1>
+    <!-- <h1>Willkommen {{ user.username }} 👋</h1>
     <p>Jobtitel: <strong>{{ user.job_title|default:"Nicht angegeben" }}</strong></p>
 
     <h4 class="mt-4">Deine Tools:</h4>
@@ -51,7 +51,7 @@
       </div>
       {% empty %}
       <p class="text-muted">Keine Tools zugewiesen.</p>
-      {% endfor %}
+      {% endfor %} -->
     </div>
 
     <a href="{% url 'users:logout' %}" class="btn btn-outline-danger mt-3">Logout</a>
