@@ -89,9 +89,29 @@
           </li>
           {% endwith %}
         </ul>
-      </div>
-    </div>
-  </nav>
+         <!-- Right-aligned user section -->
+
+                <ul class="navbar-nav">
+
+                    {% if user.is_authenticated %}
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:profile' %}">Profile</a></li>
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
+
+                    {% else %}
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Login</a></li>
+
+                    {% endif %}
+
+                </ul>
+                
+            </div>
+
+        </div>
+
+    </nav>
 
   <div class="page-wrapper">
     <div class="container content-wrapper">
