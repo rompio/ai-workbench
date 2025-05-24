@@ -1,122 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}rompion-workbench{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}rompion-workbench{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  {% load static %}
+  <style>
+    footer.footer {
+    position: relative;
+    z-index: 2;
+    background-color: #212529; /* Dunkles Bootstrap-grau */
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
 
-    <!-- Bootstrap CSS & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <style>
-        body {
-            padding-top: 56px;
-            margin: 0;
-            background-color: transparent;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
-        .navbar {
-            z-index: 1000;
-        }
+    .page-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .nav-link.active {
-            color: #c77dff !important;
-            font-weight: bold;
-        }
+    .content-wrapper {
+      flex: 1;
+      padding-top: 70px; /* Abstand zum Header */
+      padding-bottom: 20px; /* Abstand zum Footer */
+    }
 
-        .footer {
-            z-index: 100;
-            position: relative;
-        }
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.7;
+    }
 
-        .social-icons a {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: #ffffff;
-        }
+    .nav-link.active {
+      color: #c77dff !important;
+      font-weight: bold;
+    }
 
-        .social-icons a:hover {
-            color: #0d6efd;
-        }
+    .social-icons a {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: #ffffff;
+    }
 
-        .main-content {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
+    .social-icons a:hover {
+      color: #0d6efd;
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home:dashboard' %}">rompion-workbench</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarResponsive">
-                <ul class="navbar-nav">
-                    {% with request.resolver_match.app_name as current_app %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_app == 'job_hunter' or current_app == 'job-hunter' %}active{% endif %}" href="{% url 'job_hunter:dashboard' %}">Job Hunter</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_app == 'health_tracker' or current_app == 'health-tracker' %}active{% endif %}" href="{% url 'health_tracker:dashboard' %}">Health Tracker</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_app == 'movie_rater' or current_app == 'movie-rater' %}active{% endif %}" href="{% url 'movie_rater:dashboard' %}">Movie Rater</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_app == 'household_manager' or current_app == 'household-manager' %}active{% endif %}" href="{% url 'household_manager:dashboard' %}">Household Manager</a>
-                        </li>
-                    {% endwith %}
-                </ul>
+  {% block background %}
+  {% endblock %}
 
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'users:profile' %}">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home:dashboard' %}">rompion-workbench</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarResponsive">
+        <ul class="navbar-nav">
+          {% with request.resolver_match.app_name as current_app %}
+          <li class="nav-item">
+            <a class="nav-link {% if current_app == 'job_hunter' %}active{% endif %}" href="{% url 'job_hunter:dashboard' %}">Job Hunter</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_app == 'health_tracker' %}active{% endif %}" href="{% url 'health_tracker:dashboard' %}">Health Tracker</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_app == 'movie_rater' %}active{% endif %}" href="{% url 'movie_rater:dashboard' %}">Movie Rater</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_app == 'household_manager' %}active{% endif %}" href="{% url 'household_manager:dashboard' %}">Household Manager</a>
+          </li>
+          {% endwith %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container content-wrapper">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <footer class="footer mt-auto bg-dark text-light py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <p>&copy; {{ current_year }} rompiontech – All rights reserved.</p>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer mt-5 bg-dark text-light py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <p>&copy; {{ current_year }} rompiontech – All rights reserved.</p>
-                </div>
-                <div class="col-md-4">
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'users:imprint' %}" class="text-light">Imprint</a></li>
-                        <li><a href="{% url 'users:privacy_policy' %}" class="text-light">Privacy Policy</a></li>
-                        <li><a href="{% url 'users:terms_of_service' %}" class="text-light">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-md-end text-center">
-                    <p class="mb-1" style="padding-right: 2rem;">Follow us on:</p>
-                    <div class="social-icons">
-                        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.youtube.com" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-4">
+          <ul class="list-unstyled">
+            <li><a href="{% url 'users:imprint' %}" class="text-light">Imprint</a></li>
+            <li><a href="{% url 'users:privacy_policy' %}" class="text-light">Privacy Policy</a></li>
+            <li><a href="{% url 'users:terms_of_service' %}" class="text-light">Terms of Service</a></li>
+          </ul>
         </div>
-    </footer>
+        <div class="col-md-4 text-md-end text-center">
+          <p class="mb-1">Follow us on:</p>
+          <div class="social-icons">
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
