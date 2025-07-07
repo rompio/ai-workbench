@@ -1,14 +1,31 @@
-<!-- cam_manager/templates/cam_manager/dashboard.html -->
 {% extends "base.html" %}
 
-{% block content %}
-<div class="container mt-4">
-    <h1>📷 Kamera-Dashboard</h1>
-    <p>Hier kommt deine Kameraübersicht hin (Tuya, O-KAM Pro, etc.)</p>
+{% block title %}Camera Manager{% endblock %}
 
-    <div class="grid grid-cols-2 gap-4 mt-6">
-        <div class="bg-gray-100 p-4 rounded-xl shadow">Tuya-Kameras (demnächst)</div>
-        <div class="bg-gray-100 p-4 rounded-xl shadow">O-KAM Pro-Kameras (demnächst)</div>
-    </div>
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <h2>Neue Kamera hinzufügen</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Kamera speichern</button>
+    </form>
+  </div>
+
+  <div class="col-md-8">
+    <h2>Meine Kameras</h2>
+    {% if cameras %}
+      <ul class="list-group">
+        {% for camera in cameras %}
+          <li class="list-group-item">
+            <strong>{{ camera.name }}</strong> – {{ camera.ip_address }} ({{ camera.get_device_type_display }}, {{ camera.get_brand_display }})
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Keine Kameras gespeichert.</p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

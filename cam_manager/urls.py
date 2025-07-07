@@ -6,5 +6,6 @@ from . import views
 app_name = 'cam_manager'
 
 urlpatterns = [
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
+    path('add/', views.add_camera, name='add_camera'),
 ]
