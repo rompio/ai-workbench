@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'food',
     'week_planner',
     'workout',
-    'ai_assistant'
+    'ai_assistant',
+    'cam_manager',
 
 ]
 

@@ -15,4 +15,5 @@ urlpatterns = [
     path("ai_assistant/", include("ai_assistant.urls", namespace="ai_assistant")),
     path("food/", include("food.urls", namespace="food")),
     path("workout/", include("workout.urls", namespace="workout")),
+    path('cam-manager/', include('cam_manager.urls')),
 ]

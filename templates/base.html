@@ -103,6 +103,9 @@
           <li class="nav-item">
             <a class="nav-link {% if current_app == 'household_manager' %}active{% endif %}" href="{% url 'household_manager:dashboard' %}">Household Manager</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_app == 'cam_manager' %}active{% endif %}" href="{% url 'cam_manager:dashboard' %}">Camera Manager</a>
+          </li>
           {% endwith %}
         </ul>
          <!-- Right-aligned user section -->
