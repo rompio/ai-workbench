@@ -1,15 +1,13 @@
 {% extends "base.html" %}
-
 {% block title %}Kamera hinzufügen{% endblock %}
 
 {% block content %}
-  <div class="container mt-4">
-    <h2>Kamera hinzufügen</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Speichern</button>
-      <a href="{% url 'cam_manager:dashboard' %}" class="btn btn-secondary">Zurück</a>
-    </form>
-  </div>
+<h2>Neue Kamera hinzufügen</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">💾 Kamera speichern</button>
+</form>
+
+<a href="{% url 'cam_manager:dashboard' %}" class="btn btn-link mt-3">🔙 Zurück zum Dashboard</a>
 {% endblock %}

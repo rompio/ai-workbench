@@ -1,31 +1,19 @@
 {% extends "base.html" %}
-
-{% block title %}Camera Manager{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-4">
-    <h2>Neue Kamera hinzufügen</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Kamera speichern</button>
-    </form>
-  </div>
+<h2>Meine Kameras</h2>
+<a href="{% url 'cam_manager:add_camera' %}" class="btn btn-primary mb-3">➕ Kamera hinzufügen</a>
 
-  <div class="col-md-8">
-    <h2>Meine Kameras</h2>
-    {% if cameras %}
-      <ul class="list-group">
-        {% for camera in cameras %}
-          <li class="list-group-item">
-            <strong>{{ camera.name }}</strong> – {{ camera.ip_address }} ({{ camera.get_device_type_display }}, {{ camera.get_brand_display }})
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>Keine Kameras gespeichert.</p>
-    {% endif %}
-  </div>
-</div>
+{% if cameras %}
+  <ul class="list-group">
+    {% for camera in cameras %}
+      <li class="list-group-item">
+        <strong>{{ camera.name }}</strong> – {{ camera.ip_address }} ({{ camera.get_device_type_display }}, {{ camera.get_brand_display }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Du hast noch keine Kameras hinzugefügt.</p>
+{% endif %}
 {% endblock %}
