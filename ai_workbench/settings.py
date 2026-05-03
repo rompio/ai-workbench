@@ -18,6 +18,7 @@ SECRET_KEY = (
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "localhost",
     "rompion-workbench-14980d8a0750.herokuapp.com",
     "127.0.0.1",
     "www.lohbau.studio",
@@ -96,22 +97,44 @@ import dj_database_url
 #         default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
 #     )
 # }
-if os.getenv("DATABASE_URL"):
-    DATABASES = {
-        'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+# if os.getenv("DATABASE_URL"):
+#     DATABASES = {
+#         'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.getenv('DB_NAME', 'postgres'),
+#             'USER': os.getenv('DB_USER', 'postgres'),
+#             'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+#             'HOST': os.getenv('DB_HOST', 'localhost'),
+#             'PORT': os.getenv('DB_PORT', '5432'),
+#         }
+#     }
+# if os.getenv("DATABASE_URL"):
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             default=os.getenv("DATABASE_URL")
+#         )
+#     }
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#         }
+#     }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "ai_workbench_local",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'postgres'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
-    }
-
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
